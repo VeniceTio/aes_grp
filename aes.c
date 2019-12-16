@@ -16,9 +16,7 @@ void SubBytes()
 
 void shiftRows(uint8_t number)
 {
-    uint8_t chose;
-
-  return uint;
+  return NULL;
 }
 
 void mixColumns()

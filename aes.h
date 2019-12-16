@@ -3,5 +3,5 @@
 void keyExpansion();
 void AddRoundKey();
 void SubBytes();
-void shiftRows(int nbr);
+void shiftRows();
 void mixColumns();
