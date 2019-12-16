@@ -1,13 +1,13 @@
 all: main
 
-main: main.c aes.o utils.o
-    gcc -o main main.c aes.o utils.o
-
 aes.o: aes.h aes.c
-    gcc -o aes aes.c
+	gcc -Wall -o aes.o -c aes.c
 
 utils.o: utils.h utils.c
-    gcc -o utils utils.c
+	gcc -Wall -o utils.o -c utils.c
+
+main: aes.o utils.o main.c
+	gcc -Wall -o main aes.o utils.o main.c
 
 clean:
-    rm o.*
+	rm *.o main
