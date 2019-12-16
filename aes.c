@@ -1,3 +1,4 @@
+
 void keyExpansion()
 {
   return NULL;
@@ -13,9 +14,11 @@ void SubBytes()
   return NULL;
 }
 
-void shiftRows()
+void shiftRows(uint8_t number)
 {
-  return NULL;
+    uint8_t chose;
+
+  return uint;
 }
 
 void mixColumns()
