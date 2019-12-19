@@ -1,3 +1,14 @@
+#include "utils.h"
+
+#include <stdio.h>
+
+void print(uint8_t* display){
+    for(size_t i = 0; i < 16; i+=4)
+    {
+        printf("[%c, %c, %c, %c]\n", display[i], display[i+1], display[i+2], display[i+3]);
+    }
+}
+
 uint8_t* multiplyMatrice(int* tab1, int* tab2){
     if(tab1.length == tab2[0].length){
         int dim1x = tab1.length;
