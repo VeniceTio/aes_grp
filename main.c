@@ -2,8 +2,7 @@
 #include "aes.h"
 #include "utils.h"
 
-int main(int argc, char const *argv[]) {
-    //test multiply matrice
+int main(int argc, char* argv[]) {
 
   return 0;
 }
