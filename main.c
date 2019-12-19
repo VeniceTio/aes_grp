@@ -1,3 +1,4 @@
+#include "main.h"
 #include "aes.h"
 #include "utils.h"
 
