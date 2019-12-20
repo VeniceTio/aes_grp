@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1576847942 source:d:\coding\univ\m32\m32_62_aes\maths\aes.c
+	"aes.h"
+
+1576847990 d:\coding\univ\m32\m32_62_aes\maths\aes.h
+	<stdint.h>
+	<stddef.h>
+	<stdlib.h>
+
+1576847328 source:d:\coding\univ\m32\m32_62_aes\maths\main.c
+	"aes.h"
+	"utils.h"
+	<stdio.h>
+
+1576848525 d:\coding\univ\m32\m32_62_aes\maths\utils.h
+	<stdint.h>
+
+1576848620 source:d:\coding\univ\m32\m32_62_aes\maths\utils.c
+	"utils.h"
+	<stdio.h>
+

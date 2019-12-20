@@ -1,8 +1,11 @@
-all: main
+all: main aes utils
 
-main: main.c aes.o utils.o
-	gcc -Wall -o main main.c aes.o utils.o
+prog: main.o aes.o utils.o
+	gcc -Wall -o main main.o aes.o utils.o
 
+main: main.c
+	gcc -Wall -o main -c main.c
+	
 aes.o: aes.h aes.c
 	gcc -Wall -c aes.c
 
