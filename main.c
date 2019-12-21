@@ -1,6 +1,6 @@
 #include "aes.h"
 #include "utils.h"
-#include <stdio.h>
+#include "keyExtention.h"
 
 int main(int argc, char* argv[]) {
     //test print matrice
@@ -9,5 +9,22 @@ int main(int argc, char* argv[]) {
     print(tab);
     printf("\n\n\n");
     print(shiftRows(tab));
+
+    char hex[256];
+
+    stringToHexStr("Thank you", &hex);
+
+    long num = strtol(hex, NULL, 16);
+
+    printf("hex is %s.\n", hex);
+    printf("hex length %i.\n", strlen(hex));
+
+    printf("Hex in numerical: %ld \n", num);
+    printf("Hex in Hex: %#010x\n", num);
+
+    int key[KEY_LENGTH / 8];
+    hexStrToKey(hex, &key);
+
   return 0;
 }
+

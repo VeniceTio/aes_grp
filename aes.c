@@ -3,17 +3,17 @@
 void keyExpansion()
 {
 
-}
+};
 
 void addRoundKey()
 {
 
-}
+};
 
 void subBytes(int posX, int posY)
 {
 
-}
+};
 
 uint8_t* shiftRows(uint8_t* message)
 {
@@ -28,13 +28,13 @@ uint8_t* shiftRows(uint8_t* message)
      decalage++;
    }
    return res;
-}
+};
 
 uint8_t* mixColumns(uint8_t* message)
 {
     uint8_t* res = malloc(sizeof(uint8_t)*16);
     uint8_t inter[4][1];
-    uint8_t* inter2
+    uint8_t* inter2;
     for(int i=0;i<4;i++){
         inter[0][0] = message[i];
         inter[1][0] = message[i+4];
@@ -47,4 +47,4 @@ uint8_t* mixColumns(uint8_t* message)
         res[12+i] = inter2[3];
     }
     return res;
-}
+};
