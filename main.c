@@ -1,6 +1,6 @@
-#include "main.h"
 #include "aes.h"
 #include "utils.h"
+#include <stdio.h>
 
 int main(int argc, char* argv[]) {
     //test print matrice
@@ -9,5 +9,9 @@ int main(int argc, char* argv[]) {
     print(tab);
     printf("\n\n\n");
     print(shiftRows(tab));
+    printf("\n\n\n");
+    print(mixColumns(tab));
+    printf("\n\n\n");
+    print(mixColumns(shiftRows(tab)));
   return 0;
 }

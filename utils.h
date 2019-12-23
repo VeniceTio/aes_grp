@@ -1,2 +1,4 @@
+#include <stdint.h>
+
 void print(uint8_t* display);
-int[][] multiplyMatrice(int[][] tab1, int[][] tab2);
+uint8_t* multiplyMatrice(uint8_t* tab1,int dim1x,int dim1y, uint8_t* tab2,int dim2x,int dim2y);
