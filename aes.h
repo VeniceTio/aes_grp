@@ -46,6 +46,7 @@ static const int matriceMix[16]={
         3,1,1,2};
 void keyExpansion();
 void addRoundKey();
-void subBytes(int posX, int posY);
+uint8_t* subBytes(uint8_t* message);
+uint8_t subByte(uint8_t val);
 uint8_t* shiftRows(uint8_t* message);
 void mixColumns();

@@ -10,10 +10,20 @@ void addRoundKey()
 
 }
 
-void subBytes(int posX, int posY)
-{
-
+// Chiffrement d'un message
+uint8_t* subBytes(uint8_t* message) {
+  uint8_t* res = malloc(sizeof(uint8_t)*16);
+  for(int i = 0; i < 16; i++) {
+    res[i] = subByte(message[i]);
+  }
+  return res;
 }
+
+// Retourne une valeur du tableau sbox
+uint8_t subByte(uint8_t val) {
+  return sbox[val];
+}
+
 
 uint8_t* shiftRows(uint8_t* message)
 {
