@@ -1,3 +1,4 @@
+#include "main.h"
 #include "aes.h"
 #include "utils.h"
 #include <stdio.h>
@@ -8,8 +9,23 @@ int main(int argc, char* argv[]) {
 
     print(tab);
     printf("\n\n\n");
-    print(shiftRows(tab));
+
+    uint8_t* tab_shift = shiftRows(tab);
+
+    print(tab_shift);
     printf("\n\n\n");
+
+    uint8_t* tab_sub = subBytes(tab_shift);
+
+    print(tab_sub);
+    printf("\n\n\n");
+
+    uint8_t* tab_inv_sub = invSubBytes(tab_sub);
+
+    print(tab_inv_sub);
+    printf("\n\n\n");
+
+
     print(mixColumns(tab));
     printf("\n\n\n");
     print(mixColumns(shiftRows(tab)));

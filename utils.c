@@ -1,5 +1,5 @@
 #include "utils.h"
-#include <stdlib.h>
+
 #include <stdio.h>
 
 void print(uint8_t* display){

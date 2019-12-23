@@ -43,9 +43,18 @@ static uint8_t matriceMix[16]={
         0,3,1,1,
         1,2,3,1,
         1,1,2,3,
-        3,1,1,2};
+        3,1,1,2 };
 void keyExpansion();
+
 void addRoundKey();
-void subBytes(int posX, int posY);
+
+uint8_t* subBytes(uint8_t* message);
+
+uint8_t subByte(uint8_t val);
+
+uint8_t* invSubBytes(uint8_t* message);
+
+uint8_t invSubByte(uint8_t val);
+
 uint8_t* shiftRows(uint8_t* message);
 uint8_t* mixColumns(uint8_t* message);
