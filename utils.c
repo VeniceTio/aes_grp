@@ -9,7 +9,7 @@ void print(uint8_t* display){
     }
 }
 
-uint8_t* multiplyMatrice(int* tab1, int* tab2){
+uint8_t* multiplyMatrice(int* tab1, int* tab2){/*
     if(tab1.length == tab2[0].length){
         int dim1x = tab1.length;
         int dim1y = tab1[0].length;
@@ -29,5 +29,6 @@ uint8_t* multiplyMatrice(int* tab1, int* tab2){
             }
         }
     }
-    return mul;
+    return mul;*/
+    return NULL;
 }
