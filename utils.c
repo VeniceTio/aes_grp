@@ -54,5 +54,5 @@ int** multiplyMatrice(int tab1[4][4], int tab2[4][4]){
             }
         }
     }
-    return NULL;
+    return mul;
 }
