@@ -48,4 +48,4 @@ void keyExpansion();
 void addRoundKey();
 void subBytes(int posX, int posY);
 uint8_t* shiftRows(uint8_t* message);
-void mixColumns();
+uint8_t* mixColumns(uint8_t* message);
