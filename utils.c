@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+//***********************************************************
+//Un overload de print pour afficher les uint de facon plus graphique
 void print(uint8_t* display){
     for(size_t i = 0; i < 16; i+=4)
     {
@@ -9,6 +11,7 @@ void print(uint8_t* display){
     }
 }
 
+//Longueur d'un array de uint8
 int length(uint8_t* array) {
     return (sizeof(array) / sizeof(array[0]));
 }
@@ -17,6 +20,20 @@ int length2(uint8_t** array) {
     return (sizeof(array) / sizeof(array[0]));
 }
 
+//***********************************************************
+//Extrait les 2 chiffres du bit en representation Hexadecimale
+struct HexDigits getHexDigits(uint8_t byte) {
+    struct HexDigits digits;
+    //Extrait le premier chiffre
+    digits.d1 = (int)floor(byte / 16);
+    //Extrait le deuxieme chiffre
+    digits.d2 = byte % 16;
+
+    return digits;
+}
+
+//***********************************************************
+//Multiplication de deux matrices
 int** multiplyMatrice(int tab1[4][4], int tab2[4][4]){
     if(length2(tab1) == length(tab2[0])){
         int dim1x = length2(tab1);

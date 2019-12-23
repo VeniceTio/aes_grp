@@ -22,8 +22,15 @@ int main(int argc, char* argv[]) {
     printf("Hex in numerical: %ld \n", num);
     printf("Hex in Hex: %#010x\n", num);
 
-    int key[KEY_LENGTH / 8];
+    struct HexDigits digits;
+    digits = getHexDigits(183);
+    printf("Digit 1: %i\n", digits.d1);
+    printf("Digit 2: %i\n", digits.d2);
+
+    uint8_t key[KEY_LENGTH / 8];
     hexStrToKey(hex, &key);
+
+
 
   return 0;
 }

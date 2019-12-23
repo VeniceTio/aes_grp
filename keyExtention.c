@@ -1,6 +1,28 @@
 #include "keyExtention.h"
+#include "aes.h"
 
-KEY_LENGTH = 128;
+//***********************************************************
+//Algorithme d'extention de clef: genere X clefs pour X Rounds
+void keyExtention(uint8_t key[KEY_LENGTH / 8], uint8_t* extKeyW[(KEY_LENGTH / 32) * (NB_ROUNDS+1)]) {
+    //Copier la clef dans le extKey et le transformer en Mots de Bytes
+    for(int i = 0; i < 3; ++i) {
+        uint8_t word[4] = { key[i * 4], key[i * 4 + 1], key[i * 4 + 2], key[i * 4 + 3]};
+        memcpy ( word, extKeyW[i], strlen(word));
+    }
+
+    //uint8_t temp[4];
+    //memcpy ( key, extKey, strlen(key) );
+}
+
+//***********************************************************
+//Shift les Bytes du mot d'un cran vers la gauche
+void rotWord(uint8_t* word) {
+    uint8_t temp = word[0];
+    word[0] = word[1];
+    word[1] = word[2];
+    word[2] = word[3];
+    word[3] = temp;
+}
 
 char* stringToHexStr(char* text, char output[256]) {
 
@@ -27,7 +49,7 @@ char* stringToHexStr(char* text, char output[256]) {
   return output;
 }
 
-void hexStrToKey(char* hex, int* key) {
+void hexStrToKey(char* hex, uint8_t* key) {
 
     //Le nombre de Bits Hexadecimaux doit etre egal au nombre de bits de la Clef
     for(int i = 0; i < KEY_LENGTH/8; i++)
