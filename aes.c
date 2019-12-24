@@ -1,4 +1,6 @@
 #include "aes.h"
+#include "utils.h"
+#include <stdio.h>
 
 void keyExpansion()
 {
