@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//***********************************************************
+//Un overload de print pour afficher les uint de facon plus graphique
 void print(uint8_t* display){
     for(size_t i = 0; i < 16; i+=4)
     {
