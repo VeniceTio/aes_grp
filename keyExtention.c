@@ -1,17 +1,88 @@
 #include "keyExtention.h"
 #include "aes.h"
+#include "utils.h"
+
+uint8_t rCon[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36 };
 
 //***********************************************************
-//Algorithme d'extention de clef: genere X clefs pour X Rounds
-void keyExtention(uint8_t key[KEY_LENGTH / 8], uint8_t* extKeyW[(KEY_LENGTH / 32) * (NB_ROUNDS+1)]) {
-    //Copier la clef dans le extKey et le transformer en Mots de Bytes
-    for(int i = 0; i < 3; ++i) {
+// Genere un Mot de 4 Bytes a partir du tableau de rCon
+uint8_t* getRConWord(int i) {
+    static uint8_t rConWord[4];
+
+    rConWord[0] = rCon[i];
+    rConWord[1] = 0; 
+	
+    rConWord[2] = 0;
+    rConWord[3] = 0;
+
+    return rConWord;
+}
+
+//***********************************************************
+// Genere une clef a 16 byte en se basant sur une phrase
+void strToKeyByte(char* text, uint8_t output[16]) {
+  int len = strlen(text);
+
+  // Convertir Char en uint8_t (byte)
+  for (int i = 0; i < len; ++i)
+    output[i] = (uint8_t)text[i];
+
+  int i2 = len;
+  int i1 = (KEY_LENGTH / 8);
+
+  //Add zeros in order to match the key size
+  if(i1 > i2) {
+    int diff = i1 - i2;
+
+    for(int i = diff; i < (KEY_LENGTH / 8); ++i) {
+        output[i] = 0;
+    }
+  }
+}
+
+//***********************************************************
+// Algorithme d'extention de clef: genere X+1 clefs pour X Rounds
+// Applique le chiffrement sur le Premier mot de la clef. Ensuite, le chiffrement se propage
+// car le Deuxieme mot = (Premier mot) XOR (Deuxieme mot de la clef precedente)
+// ETC jusqu'a NB_CLEFS = NB_ROUNDS + 1
+void keyExtention(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
+    int keyWords = (KEY_LENGTH / 32); // 4 pour la clef de 128 bits
+
+    // Copier la clef dans le extKey et le transformer en Mots de Bytes
+    for(int i = 0; i < 4; i++) {
         uint8_t word[4] = { key[i * 4], key[i * 4 + 1], key[i * 4 + 2], key[i * 4 + 3]};
-        memcpy ( word, extKeyW[i], strlen(word));
+        //extKeyW[i] = word[i];
+        memcpy (&extKeyW[i], &word[i], sizeof(uint8_t) * 4);
+
+        printWord(word);
     }
 
-    //uint8_t temp[4];
-    //memcpy ( key, extKey, strlen(key) );
+    // Boucle d'extention de clef
+    for(int i = 4; i < 4 * (NB_ROUNDS+1); ++i) {
+        // Cree le mot temp = le mot precedent
+        uint8_t* temp = malloc(sizeof(uint8_t) * 4);
+        memcpy (temp, &extKeyW[i-1], sizeof(uint8_t) * 4);
+
+        // Si c'est le premier mot de la clef
+        if(i % keyWords == 0) {
+            // Appliquer la rotation, substitution, rCon
+            rotWord(temp);
+            subWord(temp);
+            temp = xorWords(subWord, getRConWord(i/keyWords));
+        }
+        // ...
+        else if(keyWords > 6 && (i % keyWords) == 4) {
+            subWord(temp);
+        }
+
+        //Xor le mot (de la meme position) de la clef precedente avec le mot temp
+        uint8_t* newWord = malloc(sizeof(uint8_t) * 4);
+        memcpy (newWord, &extKeyW[i-keyWords], sizeof(uint8_t) * 4);
+        newWord = xorWords(newWord, temp);
+
+        //Le nouveau mot dans la clef est newWord
+        memcpy (&extKeyW[i], newWord, sizeof(uint8_t) * 4);
+    }
 }
 
 //***********************************************************
@@ -32,8 +103,8 @@ char* stringToHexStr(char* text, char output[256]) {
   for (int i = 0, j = 0; i < len; ++i, j += 2)
     sprintf(output + j, "%02x", text[i] & 0xff);
 
-    int i2 = (strlen(output) / 2);
-    int i1 = (KEY_LENGTH / 8);
+  int i2 = (strlen(output) / 2);
+  int i1 = (KEY_LENGTH / 8);
 
 
   //Add zeros in order to match the key size
@@ -62,6 +133,8 @@ void hexStrToKey(char* hex, uint8_t* key) {
         substr[2] = '\0';
 
         //Convertir en int pour stocker dans la clef key[16]
-        key[i] = (uint8_t)strtol(substr, NULL, 16);
+        uint8_t keyBit = (uint8_t)strtol(substr, NULL, 16);
+
+        key[i] = keyBit;
     }
 }

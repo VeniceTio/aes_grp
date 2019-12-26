@@ -3,7 +3,6 @@
 extern int KEY_LENGTH;
 extern int NB_ROUNDS;
 
-<<<<<<< HEAD
 void subWord(uint8_t word[4]);
 void keyExpansion();
 

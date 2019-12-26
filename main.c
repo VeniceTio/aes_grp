@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 
     print(tab);
     printf("\n\n\n");
-	
+
 	// Test Shift Rows
     uint8_t* tab_shift = shiftRows(tab);
 
@@ -32,24 +32,50 @@ int main(int argc, char* argv[]) {
 	// Test Hexadecimal
     char hex[256];
 
-    stringToHexStr("Thank you", &hex);
+    char* phrase = "Thank you";
+
+    stringToHexStr(phrase, &hex);
+
+    printf("Keygen Phrase: %s\n", phrase);
+    printf("Text In Hex %s.\n", hex);
+    printf("Length of Hex String %i.\n", strlen(hex));
 
     long num = strtol(hex, NULL, 16);
-
-    printf("hex is %s.\n", hex);
-    printf("hex length %i.\n", strlen(hex));
-
     printf("Hex in numerical: %ld \n", num);
-    printf("Hex in Hex: %#010x\n", num);
 
     struct HexDigits digits;
     digits = getHexDigits(183);
     printf("Digit 1: %i\n", digits.d1);
     printf("Digit 2: %i\n", digits.d2);
 
+    //***********************************
 	// Test Extention Clefs
-    uint8_t key[KEY_LENGTH / 8];
-    hexStrToKey(hex, &key);
+
+	// Creer la clef en bits a partir de la phrase
+    uint8_t key[(KEY_LENGTH / 8)];
+    strToKeyByte(phrase, &key);
+
+    // Afficher les bytes de la clef
+    printf("Key Bytes:");
+    for(int i = 0; i < (KEY_LENGTH / 8); ++i) {
+        printf("%i ", key[i]);
+    }
+
+    // Allocation memoire de 4 Mots Binaires de 4 uint8_t (byte) chacun
+    uint8_t extKey[4][4];
+
+    uint8_t testKey[16] = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+
+    // Etendre la clef en (NbRound + 1) clefs
+    keyExtention(testKey, (uint8_t**)extKey);
+
+    for(int i = 0; i < (KEY_LENGTH / 32) * (NB_ROUNDS+1); ++i) {
+        if(i % 4 == 0)
+            printf("\n Key:\n");
+        //printWord(&extKey[i]);
+        printWordHex(&extKey[i]);
+    }
+
   return 0;
 }
 
