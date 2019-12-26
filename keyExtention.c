@@ -10,8 +10,7 @@ uint8_t* getRConWord(int i) {
     static uint8_t rConWord[4];
 
     rConWord[0] = rCon[i];
-    rConWord[1] = 0; 
-	
+    rConWord[1] = 0;
     rConWord[2] = 0;
     rConWord[3] = 0;
 
