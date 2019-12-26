@@ -67,7 +67,7 @@ uint8_t* shiftRows(uint8_t* message)
    return res;
 }
 
-uint8_t* mixColumns(uint8_t* message)
+/*uint8_t* mixColumns(uint8_t* message)
 {
     uint8_t* res = malloc(sizeof(uint8_t)*16);
     uint8_t inter[4][1];
@@ -84,7 +84,7 @@ uint8_t* mixColumns(uint8_t* message)
         res[12+i] = inter2[3];
     }
     return res;
-}
+}*/
 
 extern const uint8_t sbox[] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
