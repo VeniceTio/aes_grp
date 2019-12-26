@@ -1,6 +1,6 @@
 #include "aes.h"
 #include "utils.h"
-#include "keyExtention.h"
+#include "keyExpansion.h"
 
 #include <stdio.h>
 
@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 
     print(tab);
     printf("\n\n\n");
-	
+
 	// Test Shift Rows
     uint8_t* tab_shift = shiftRows(tab);
 
@@ -37,10 +37,10 @@ int main(int argc, char* argv[]) {
     long num = strtol(hex, NULL, 16);
 
     printf("hex is %s.\n", hex);
-    printf("hex length %i.\n", strlen(hex));
+    printf("hex length %li.\n", strlen(hex));
 
     printf("Hex in numerical: %ld \n", num);
-    printf("Hex in Hex: %#010x\n", num);
+    printf("Hex in Hex: %#010lx\n", num);
 
     struct HexDigits digits;
     digits = getHexDigits(183);
@@ -52,4 +52,3 @@ int main(int argc, char* argv[]) {
     hexStrToKey(hex, &key);
   return 0;
 }
-

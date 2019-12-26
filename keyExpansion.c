@@ -1,9 +1,9 @@
-#include "keyExtention.h"
+#include "keyExpansion.h"
 #include "aes.h"
 
 //***********************************************************
 //Algorithme d'extention de clef: genere X clefs pour X Rounds
-void keyExtention(uint8_t key[KEY_LENGTH / 8], uint8_t* extKeyW[(KEY_LENGTH / 32) * (NB_ROUNDS+1)]) {
+void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t* extKeyW[(KEY_LENGTH / 32) * (NB_ROUNDS+1)]) {
     //Copier la clef dans le extKey et le transformer en Mots de Bytes
     for(int i = 0; i < 3; ++i) {
         uint8_t word[4] = { key[i * 4], key[i * 4 + 1], key[i * 4 + 2], key[i * 4 + 3]};
