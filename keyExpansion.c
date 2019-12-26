@@ -1,4 +1,4 @@
-#include "keyExtention.h"
+#include "keyExpansion.h"
 #include "aes.h"
 #include "utils.h"
 
@@ -9,7 +9,7 @@ uint8_t rCon[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36 };
 uint8_t* getRConWord(int i) {
     static uint8_t rConWord[4];
 
-    rConWord[0] = rCon[i];
+    rConWord[0] = rCon[i-1];
     rConWord[1] = 0;
     rConWord[2] = 0;
     rConWord[3] = 0;
@@ -44,14 +44,14 @@ void strToKeyByte(char* text, uint8_t output[16]) {
 // Applique le chiffrement sur le Premier mot de la clef. Ensuite, le chiffrement se propage
 // car le Deuxieme mot = (Premier mot) XOR (Deuxieme mot de la clef precedente)
 // ETC jusqu'a NB_CLEFS = NB_ROUNDS + 1
-void keyExtention(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
+void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
     int keyWords = (KEY_LENGTH / 32); // 4 pour la clef de 128 bits
 
     // Copier la clef dans le extKey et le transformer en Mots de Bytes
     for(int i = 0; i < 4; i++) {
         uint8_t word[4] = { key[i * 4], key[i * 4 + 1], key[i * 4 + 2], key[i * 4 + 3]};
         //extKeyW[i] = word[i];
-        memcpy (&extKeyW[i], &word[i], sizeof(uint8_t) * 4);
+        memcpy (&extKeyW[i], word, sizeof(uint8_t) * 4);
 
         printWord(word);
     }
@@ -67,7 +67,8 @@ void keyExtention(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
             // Appliquer la rotation, substitution, rCon
             rotWord(temp);
             subWord(temp);
-            temp = xorWords(subWord, getRConWord(i/keyWords));
+            uint8_t* rCon = getRConWord(i/keyWords);
+            temp = xorWords(temp, rCon );
         }
         // ...
         else if(keyWords > 6 && (i % keyWords) == 4) {

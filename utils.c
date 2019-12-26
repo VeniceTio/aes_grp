@@ -73,5 +73,8 @@ struct HexDigits getHexDigits(uint8_t byte) {
         }
         return mul;
     }
-    return NULL;
+    else{
+      return NULL;
+    }
+
 }*/

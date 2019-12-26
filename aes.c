@@ -11,15 +11,10 @@ extern const uint8_t sbox[256];
 extern const uint8_t inv_sbox[256];
 extern const int matriceMix[16];
 
-void keyExpansion()
-{
-
-};
-
 void addRoundKey()
 {
 
-};
+}
 
 //***********************************************************
 //Applique la S-box sur un mot de 4 Bytes
@@ -70,7 +65,7 @@ uint8_t* shiftRows(uint8_t* message)
      shift++;
    }
    return res;
-};
+}
 
 /*uint8_t* mixColumns(uint8_t* message)
 {
@@ -89,7 +84,7 @@ uint8_t* shiftRows(uint8_t* message)
         res[12+i] = inter2[3];
     }
     return res;
-};*/
+}*/
 
 extern const uint8_t sbox[] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F

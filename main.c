@@ -1,6 +1,6 @@
 #include "aes.h"
 #include "utils.h"
-#include "keyExtention.h"
+#include "keyExpansion.h"
 
 #include <stdio.h>
 
@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
     uint8_t testKey[16] = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
 
     // Etendre la clef en (NbRound + 1) clefs
-    keyExtention(testKey, (uint8_t**)extKey);
+    keyExpansion(testKey, (uint8_t**)extKey);
 
     for(int i = 0; i < (KEY_LENGTH / 32) * (NB_ROUNDS+1); ++i) {
         if(i % 4 == 0)
@@ -78,4 +78,3 @@ int main(int argc, char* argv[]) {
 
   return 0;
 }
-
