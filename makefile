@@ -1,16 +1,21 @@
-all: main aes utils
+CC=gcc
 
-prog: main.o aes.o utils.o
-	gcc -Wall -o main main.o aes.o utils.o
+all: main main.o aes.o utils.o keyExpansion.o
 
-main: main.c
-	gcc -Wall -o main -c main.c
-	
+main: main.o aes.o utils.o keyExpansion.o
+	gcc -o main -Wall main.o aes.o utils.o keyExpansion.o
+
+main.o: main.c
+	gcc -o main.o -Wall -c main.c
+
 aes.o: aes.h aes.c
-	gcc -Wall -c aes.c
+	gcc -o aes.o -Wall -c aes.c
 
 utils.o: utils.h utils.c
-	gcc -Wall -c utils.c
+	gcc -o utils.o -Wall -c utils.c
+
+keyExpansion.o: keyExpansion.h keyExpansion.c
+	gcc -o keyExpansion.o -Wall -c keyExpansion.c
 
 clean:
 	rm *.o main

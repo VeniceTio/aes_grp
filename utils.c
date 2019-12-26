@@ -1,6 +1,8 @@
 #include "utils.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+
 
 //***********************************************************
 //Un overload de print pour afficher les uint de facon plus graphique
@@ -53,6 +55,10 @@ int** multiplyMatrice(int tab1[4][4], int tab2[4][4]){
                 }
             }
         }
+        return mul;
     }
-    return mul;
+    else{
+      return NULL;
+    }
+
 }
