@@ -29,6 +29,12 @@ int main(int argc, char* argv[]) {
     print(tab_inv_sub);
     printf("\n\n\n");
 
+  // Test invShiftRows
+    uint8_t* tab_origin = invShiftRows(tab_inv_sub);
+
+    print(tab_origin);
+    printf("\n\n\n");
+
 	// Test Hexadecimal
     char hex[256];
 
