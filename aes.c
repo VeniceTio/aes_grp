@@ -9,7 +9,8 @@ NB_ROUNDS = 10;
 
 extern const uint8_t sbox[256];
 extern const uint8_t inv_sbox[256];
-extern const int matriceMix[16];
+extern const uint8_t matriceMix[16];
+extern const uint8_t inv_matriceMix[16];
 
 //***********************************************************
 //Applique la S-box sur un mot de 4 Bytes
@@ -17,6 +18,15 @@ void subWord(uint8_t word[4]) {
     for(int i = 0; i < 4; ++i) {
         word[i] = sbox[word[i]];
     }
+}
+
+void addRoundKey(uint8_t* word, uint8_t key){
+  for (size_t i = 0; i < 4; i++) {
+    word[i] = word[i] ^ key;
+    word[i+4] = word[i+4] ^ key;
+    word[i+8] = word[i+8] ^ key;
+    word[i+12] = word[i+12] ^ key;
+  }
 }
 
 // Chiffrement d'un word
@@ -62,8 +72,7 @@ uint8_t* shiftRows(uint8_t* word)
    return res;
 }
 
-uint8_t* invShiftRows(uint8_t* word)
-{
+uint8_t* invShiftRows(uint8_t* word){
    int shift = 0;
    uint8_t* res = malloc(sizeof(uint8_t)*16);
    for(int i = 0; i < 16; i+=4) {
@@ -76,54 +85,47 @@ uint8_t* invShiftRows(uint8_t* word)
    return res;
 }
 
-/*uint8_t* mixColumns(uint8_t* word)
+uint8_t* mixColumns(uint8_t* word)
 {
-    uint8_t* res = malloc(sizeof(uint8_t)*16);
-    uint8_t inter[4][1];
-    uint8_t* inter2;
-    for(int i=0;i<4;i++){
-        inter[0][0] = word[i];
-        inter[1][0] = word[i+4];
-        inter[2][0] = word[i+8];
-        inter[3][0] = word[i+12];
-        inter2 = multiplyMatrice(inter,matriceMix);
-        res[i] = inter2[0];
-        res[4+i] = inter2[1];
-        res[8+i] = inter2[2];
-        res[12+i] = inter2[3];
-    }
-    return res;
-}*/
-/*
-uint8_t invCipher(uint8_t cipher_word[4*Nb], uint8_t uncipher_word[Nb*(Nr+1)])
-{
+  uint8_t* new_word = malloc(sizeof(uint8_t)*16);
 
-  uint8_t state[4,Nb];
-
-  state = in;
-
-  addRoundKey(state, w[Nr*Nb, (Nr+1)*Nb-1]);
-
-  for (size_t i = 0; i < count; i++) {
-    invShiftRows(state);
+  for (size_t i = 0; i < 16; i++) {
+    new_word[i] = word[i] & matriceMix[i];
   }
-InvSubBytes(state) // See Sec. 5.3.2
 
-AddRoundKey(state, w[round*Nb, (round+1)*Nb-1])
-
-InvMixColumns(state) // See Sec. 5.3.3
-
-end for
-
-InvShiftRows(state)
-
-InvSubBytes(state)
-
-AddRoundKey(state, w[0, Nb-1])
-
-out = state
+  return new_word;
 }
-*/
+
+uint8_t* invMixColumns(uint8_t* word){
+  uint8_t* new_word = malloc(sizeof(uint8_t)*16);
+
+  for (size_t i = 0; i < 16; i++) {
+    new_word[i] = word[i] & inv_matriceMix[i];
+  }
+  return new_word;
+}
+/*
+uint8_t* invCipher(uint8_t cipher_word[4])
+{
+
+  uint8_t uncipher_word[4];
+
+  addRoundKey(state, uncipher_word[Nr*Nb, (Nr+1)*Nb-1]);
+
+  for (size_t i = 0; i < 4; i++) {
+    invShiftRows(state);
+    invSubBytes(state);
+    addRoundKey(state, uncipher_word[round*Nb, (i+1)*Nb-1]);
+    invMixColumns(state);
+  }
+
+  invShiftRows(state);
+  invSubBytes(state);
+  addRoundKey(state, uncipher_word[0, Nb-1]);
+
+  return state;
+}*/
+
 
 extern const uint8_t sbox[] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
@@ -162,8 +164,16 @@ extern const uint8_t inv_sbox[] = {
   0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0, 0xc8, 0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61,
   0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d };
 
-extern const int matriceMix[]={
-        0,3,1,1,
-        1,2,3,1,
-        1,1,2,3,
-        3,1,1,2};
+extern const uint8_t matriceMix[]={
+  0x02, 0x03, 0x01, 0x01,
+  0x01, 0x02, 0x03, 0x01,
+  0x01, 0x01, 0x02, 0x03,
+  0x03, 0x01, 0x01, 0x02
+};
+
+extern const uint8_t inv_matriceMix[]={
+  0x0E, 0x0B, 0x0D, 0x09,
+  0x09, 0x0E, 0x0B, 0x0D,
+  0x0D, 0x09, 0x0E, 0x0B,
+  0x0B, 0x0D, 0x09, 0x0E
+};

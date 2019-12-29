@@ -17,3 +17,4 @@ uint8_t* shiftRows(uint8_t* word);
 uint8_t* mixColumns(uint8_t* word);
 
 uint8_t* invShiftRows(uint8_t* word);
+uint8_t* invMixColumns(uint8_t* word);

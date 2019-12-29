@@ -35,16 +35,28 @@ int main(int argc, char* argv[]) {
     print(tab_origin);
     printf("\n\n\n");
 
+    // Test mixColumns
+    uint8_t* tab_columns_mix = mixColumns(tab_origin);
+
+    print(tab_columns_mix);
+    printf("\n\n\n");
+
+    // Test inv_mixColumns
+    uint8_t* tab_columns_unmix = mixColumns(tab_columns_mix);
+
+    print(tab_columns_unmix);
+    printf("\n\n\n");
+
 	// Test Hexadecimal
     char hex[256];
 
     char* phrase = "Thank you";
 
-    stringToHexStr(phrase, &hex);
+    stringToHexStr(phrase, hex);
 
     printf("Keygen Phrase: %s\n", phrase);
     printf("Text In Hex %s.\n", hex);
-    printf("Length of Hex String %i.\n", strlen(hex));
+    printf("Length of Hex String %li.\n", strlen(hex));
 
     long num = strtol(hex, NULL, 16);
     printf("Hex in numerical: %ld \n", num);
@@ -59,7 +71,7 @@ int main(int argc, char* argv[]) {
 
 	// Creer la clef en bits a partir de la phrase
     uint8_t key[(KEY_LENGTH / 8)];
-    strToKeyByte(phrase, &key);
+    strToKeyByte(phrase, key);
 
     // Afficher les bytes de la clef
     printf("Key Bytes:");
