@@ -20,20 +20,20 @@ void subWord(uint8_t word[4]) {
     }
 }
 
-void addRoundKey(uint8_t* word, uint8_t key){
+void addRoundKey(uint8_t* matrice, uint8_t key){
   for (size_t i = 0; i < 4; i++) {
-    word[i] = word[i] ^ key;
-    word[i+4] = word[i+4] ^ key;
-    word[i+8] = word[i+8] ^ key;
-    word[i+12] = word[i+12] ^ key;
+    matrice[i] = matrice[i] ^ key;
+    matrice[i+4] = matrice[i+4] ^ key;
+    matrice[i+8] = matrice[i+8] ^ key;
+    matrice[i+12] = matrice[i+12] ^ key;
   }
 }
 
-// Chiffrement d'un word
-uint8_t* subBytes(uint8_t* word) {
+// Chiffrement d'un matrice
+uint8_t* subBytes(uint8_t* matrice) {
   uint8_t* res = malloc(sizeof(uint8_t)*16);
   for(int i = 0; i < 16; i++) {
-    res[i] = subByte(word[i]);
+    res[i] = subByte(matrice[i]);
   }
   return res;
 }
@@ -43,11 +43,11 @@ uint8_t subByte(uint8_t val) {
   return sbox[val];
 }
 
-// Chiffrement d'un word
-uint8_t* invSubBytes(uint8_t* word) {
+// Chiffrement d'un matrice
+uint8_t* invSubBytes(uint8_t* matrice) {
   uint8_t* res = malloc(sizeof(uint8_t)*16);
   for(int i = 0; i < 16; i++) {
-    res[i] = invSubByte(word[i]);
+    res[i] = invSubByte(matrice[i]);
   }
   return res;
 }
@@ -57,71 +57,122 @@ uint8_t invSubByte(uint8_t val) {
   return inv_sbox[val];
 }
 
-uint8_t* shiftRows(uint8_t* word)
+uint8_t* shiftRows(uint8_t* matrice)
 {
   // chaque ligne est inversée
    int shift = 0; // le décalage augmente de 1 a chaque tour de boucle (0 à 3)
    uint8_t* res = malloc(sizeof(uint8_t)*16);
    for(int i = 0; i < 16; i+=4) { // Pour changer de ligne, on incrémente de 4
-     res[i] = word[i+(shift%4)];
-     res[i+1] = word[i+(shift+1)%4];
-     res[i+2] = word[i+(shift+2)%4];
-     res[i+3] = word[i+(shift+3)%4];
+     res[i] = matrice[i+(shift%4)];
+     res[i+1] = matrice[i+(shift+1)%4];
+     res[i+2] = matrice[i+(shift+2)%4];
+     res[i+3] = matrice[i+(shift+3)%4];
      shift++;
    }
    return res;
 }
 
-uint8_t* invShiftRows(uint8_t* word){
+uint8_t* invShiftRows(uint8_t* matrice){
    int shift = 0;
    uint8_t* res = malloc(sizeof(uint8_t)*16);
    for(int i = 0; i < 16; i+=4) {
-     res[i] = word[i+(shift+4)%4];
-     res[i+1] = word[i+(shift+5)%4];
-     res[i+2] = word[i+(shift+6)%4];
-     res[i+3] = word[i+(shift+7)%4];
+     res[i] = matrice[i+(shift+4)%4];
+     res[i+1] = matrice[i+(shift+5)%4];
+     res[i+2] = matrice[i+(shift+6)%4];
+     res[i+3] = matrice[i+(shift+7)%4];
      shift--;
    }
    return res;
 }
 
-uint8_t* mixColumns(uint8_t* word)
+uint8_t* mixColumns(uint8_t* matrice)
 {
-  uint8_t* new_word = malloc(sizeof(uint8_t)*16);
+  uint8_t* new_matrice = malloc(sizeof(uint8_t)*16);
+  uint8_t* temp = malloc(sizeof(uint8_t)*4);
 
-  for (size_t i = 0; i < 16; i++) {
-    new_word[i] = word[i] & matriceMix[i];
+  for (size_t i = 0; i < 16; i+=4) {
+    temp = getColumn(matrice, i);
+    temp = multiply(temp);
+    new_matrice[i] = temp[i];
+    new_matrice[i+1] = temp[i+1];
+    new_matrice[i+2] = temp[i+2];
+    new_matrice[i+3] = temp[i+3];
   }
 
-  return new_word;
+  free(temp);
+  return new_matrice;
 }
 
-uint8_t* invMixColumns(uint8_t* word){
-  uint8_t* new_word = malloc(sizeof(uint8_t)*16);
+uint8_t* invMixColumns(uint8_t* matrice){
+  uint8_t* new_matrice = malloc(sizeof(uint8_t)*16);
+  uint8_t* temp = malloc(sizeof(uint8_t)*4);
 
-  for (size_t i = 0; i < 16; i++) {
-    new_word[i] = word[i] & inv_matriceMix[i];
+  for (size_t i = 0; i < 16; i+=4) {
+    temp = getColumn(matrice, i);
+    temp = invMultiply(temp);
+    new_matrice[i] = temp[i];
+    new_matrice[i+1] = temp[i+1];
+    new_matrice[i+2] = temp[i+2];
+    new_matrice[i+3] = temp[i+3];
   }
-  return new_word;
+
+  free(temp);
+  return new_matrice;
 }
+
+uint8_t* multiply(uint8_t* column){
+  uint8_t* res = malloc(sizeof(uint8_t)*4);
+
+  for (size_t i = 0; i < 16; i+=4) {
+    res[0] = res[0] & matriceMix[i];
+    res[1] = res[1] & matriceMix[i+1];
+    res[2] = res[2] & matriceMix[i+2];
+    res[3] = res[3] & matriceMix[i+3];
+  }
+
+  return res;
+}
+
+uint8_t* invMultiply(uint8_t* column){
+  uint8_t* res = malloc(sizeof(uint8_t)*4);
+
+  for (size_t i = 0; i < 16; i+=4) {
+    res[0] = res[0] & inv_matriceMix[i];
+    res[1] = res[1] & inv_matriceMix[i+1];
+    res[2] = res[2] & inv_matriceMix[i+2];
+    res[3] = res[3] & inv_matriceMix[i+3];
+  }
+
+  return res;
+}
+
+uint8_t* getColumn(uint8_t* matrice, int pos){
+  uint8_t* column = malloc(sizeof(uint8_t)*4);
+  int posColumn = pos%4;
+  for(int i = 0; i < 4; i++) {
+    column[i] = matrice[i*4 + posColumn];
+  }
+  return column;
+}
+
 /*
-uint8_t* invCipher(uint8_t cipher_word[4])
+uint8_t* invCipher(uint8_t cipher_matrice[4])
 {
 
-  uint8_t uncipher_word[4];
+  uint8_t uncipher_matrice[4];
 
-  addRoundKey(state, uncipher_word[Nr*Nb, (Nr+1)*Nb-1]);
+  addRoundKey(state, uncipher_matrice[Nr*Nb, (Nr+1)*Nb-1]);
 
   for (size_t i = 0; i < 4; i++) {
     invShiftRows(state);
     invSubBytes(state);
-    addRoundKey(state, uncipher_word[round*Nb, (i+1)*Nb-1]);
+    addRoundKey(state, uncipher_matrice[round*Nb, (i+1)*Nb-1]);
     invMixColumns(state);
   }
 
   invShiftRows(state);
   invSubBytes(state);
-  addRoundKey(state, uncipher_word[0, Nb-1]);
+  addRoundKey(state, uncipher_matrice[0, Nb-1]);
 
   return state;
 }*/

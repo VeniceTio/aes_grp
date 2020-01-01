@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     printf("\n\n\n");
 
     // Test inv_mixColumns
-    uint8_t* tab_columns_unmix = mixColumns(tab_columns_mix);
+    uint8_t* tab_columns_unmix = invMixColumns(tab_columns_mix);
 
     print(tab_columns_unmix);
     printf("\n\n\n");
