@@ -1,6 +1,6 @@
 #include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h>
+
 #include "aes.h"
 #include "utils.h"
 
@@ -9,19 +9,8 @@ NB_ROUNDS = 10;
 
 extern const uint8_t sbox[256];
 extern const uint8_t inv_sbox[256];
-extern const int matriceMix[16];
-
-
-
-void keyExpansion()
-{
-
-};
-
-void addRoundKey()
-{
-
-};
+extern const uint8_t matriceMix[16];
+extern const uint8_t inv_matriceMix[16];
 
 //***********************************************************
 //Applique la S-box sur un mot de 4 Bytes
@@ -31,11 +20,20 @@ void subWord(uint8_t word[4]) {
     }
 }
 
-// Chiffrement d'un message
-uint8_t* subBytes(uint8_t* message) {
+void addRoundKey(uint8_t* matrice, uint8_t key){
+  for (size_t i = 0; i < 4; i++) {
+    matrice[i] = matrice[i] ^ key;
+    matrice[i+4] = matrice[i+4] ^ key;
+    matrice[i+8] = matrice[i+8] ^ key;
+    matrice[i+12] = matrice[i+12] ^ key;
+  }
+}
+
+// Chiffrement d'un matrice
+uint8_t* subBytes(uint8_t* matrice) {
   uint8_t* res = malloc(sizeof(uint8_t)*16);
   for(int i = 0; i < 16; i++) {
-    res[i] = subByte(message[i]);
+    res[i] = subByte(matrice[i]);
   }
   return res;
 }
@@ -45,11 +43,11 @@ uint8_t subByte(uint8_t val) {
   return sbox[val];
 }
 
-// Chiffrement d'un message
-uint8_t* invSubBytes(uint8_t* message) {
+// Chiffrement d'un matrice
+uint8_t* invSubBytes(uint8_t* matrice) {
   uint8_t* res = malloc(sizeof(uint8_t)*16);
   for(int i = 0; i < 16; i++) {
-    res[i] = invSubByte(message[i]);
+    res[i] = invSubByte(matrice[i]);
   }
   return res;
 }
@@ -59,40 +57,125 @@ uint8_t invSubByte(uint8_t val) {
   return inv_sbox[val];
 }
 
-uint8_t* shiftRows(uint8_t* message)
+uint8_t* shiftRows(uint8_t* matrice)
 {
   // chaque ligne est inversée
    int shift = 0; // le décalage augmente de 1 a chaque tour de boucle (0 à 3)
    uint8_t* res = malloc(sizeof(uint8_t)*16);
    for(int i = 0; i < 16; i+=4) { // Pour changer de ligne, on incrémente de 4
-     res[i] = message[i+(shift%4)];
-     res[i+1] = message[i+(shift+1)%4];
-     res[i+2] = message[i+(shift+2)%4];
-     res[i+3] = message[i+(shift+3)%4];
+     res[i] = matrice[i+(shift%4)];
+     res[i+1] = matrice[i+(shift+1)%4];
+     res[i+2] = matrice[i+(shift+2)%4];
+     res[i+3] = matrice[i+(shift+3)%4];
      shift++;
    }
    return res;
-};
-
-uint8_t* mixColumns(uint8_t* message)
-{
-    uint8_t* res = malloc(sizeof(uint8_t)*16);
-    uint8_t* inter = malloc(sizeof(uint8_t)*4);
-    uint8_t* inter2 = malloc(sizeof(uint8_t)*4);
-    for(int i=0;i<4;i++){
-        inter[0] = message[i];
-        inter[1] = message[i+4];
-        inter[2] = message[i+8];
-        inter[3] = message[i+12];
-        printf("envoyé : \n[%c]\n[%c]\n[%c]\n[%c]\n",inter[0], inter[1],inter[2],inter[3]);
-        inter2 = multiplyMatrice(inter,4,1,matriceMix,4,4);
-        res[i] = inter2[0];
-        res[4+i] = inter2[1];
-        res[8+i] = inter2[2];
-        res[12+i] = inter2[3];
-    }
-    return res;
 }
+
+uint8_t* invShiftRows(uint8_t* matrice){
+   int shift = 0;
+   uint8_t* res = malloc(sizeof(uint8_t)*16);
+   for(int i = 0; i < 16; i+=4) {
+     res[i] = matrice[i+(shift+4)%4];
+     res[i+1] = matrice[i+(shift+5)%4];
+     res[i+2] = matrice[i+(shift+6)%4];
+     res[i+3] = matrice[i+(shift+7)%4];
+     shift--;
+   }
+   return res;
+}
+
+uint8_t* mixColumns(uint8_t* matrice)
+{
+  uint8_t* new_matrice = malloc(sizeof(uint8_t)*16);
+  uint8_t* temp = malloc(sizeof(uint8_t)*4);
+
+  for (size_t i = 0; i < 16; i+=4) {
+    temp = getColumn(matrice, i);
+    temp = multiply(temp);
+    new_matrice[i] = temp[i];
+    new_matrice[i+1] = temp[i+1];
+    new_matrice[i+2] = temp[i+2];
+    new_matrice[i+3] = temp[i+3];
+  }
+
+  free(temp);
+  return new_matrice;
+}
+
+uint8_t* invMixColumns(uint8_t* matrice){
+  uint8_t* new_matrice = malloc(sizeof(uint8_t)*16);
+  uint8_t* temp = malloc(sizeof(uint8_t)*4);
+
+  for (size_t i = 0; i < 16; i+=4) {
+    temp = getColumn(matrice, i);
+    temp = invMultiply(temp);
+    new_matrice[i] = temp[i];
+    new_matrice[i+1] = temp[i+1];
+    new_matrice[i+2] = temp[i+2];
+    new_matrice[i+3] = temp[i+3];
+  }
+
+  free(temp);
+  return new_matrice;
+}
+
+uint8_t* multiply(uint8_t* column){
+  uint8_t* res = malloc(sizeof(uint8_t)*4);
+
+  for (size_t i = 0; i < 16; i+=4) {
+    res[0] = res[0] & matriceMix[i];
+    res[1] = res[1] & matriceMix[i+1];
+    res[2] = res[2] & matriceMix[i+2];
+    res[3] = res[3] & matriceMix[i+3];
+  }
+
+  return res;
+}
+
+uint8_t* invMultiply(uint8_t* column){
+  uint8_t* res = malloc(sizeof(uint8_t)*4);
+
+  for (size_t i = 0; i < 16; i+=4) {
+    res[0] = res[0] & inv_matriceMix[i];
+    res[1] = res[1] & inv_matriceMix[i+1];
+    res[2] = res[2] & inv_matriceMix[i+2];
+    res[3] = res[3] & inv_matriceMix[i+3];
+  }
+
+  return res;
+}
+
+uint8_t* getColumn(uint8_t* matrice, int pos){
+  uint8_t* column = malloc(sizeof(uint8_t)*4);
+  int posColumn = pos%4;
+  for(int i = 0; i < 4; i++) {
+    column[i] = matrice[i*4 + posColumn];
+  }
+  return column;
+}
+
+/*
+uint8_t* invCipher(uint8_t cipher_matrice[4])
+{
+
+  uint8_t uncipher_matrice[4];
+
+  addRoundKey(state, uncipher_matrice[Nr*Nb, (Nr+1)*Nb-1]);
+
+  for (size_t i = 0; i < 4; i++) {
+    invShiftRows(state);
+    invSubBytes(state);
+    addRoundKey(state, uncipher_matrice[round*Nb, (i+1)*Nb-1]);
+    invMixColumns(state);
+  }
+
+  invShiftRows(state);
+  invSubBytes(state);
+  addRoundKey(state, uncipher_matrice[0, Nb-1]);
+
+  return state;
+}*/
 
 
 extern const uint8_t sbox[] = {
@@ -132,8 +215,16 @@ extern const uint8_t inv_sbox[] = {
   0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0, 0xc8, 0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61,
   0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d };
 
-extern const int matriceMix[]={
-        0,3,1,1,
-        1,2,3,1,
-        1,1,2,3,
-        3,1,1,2};
+extern const uint8_t matriceMix[]={
+  0x02, 0x03, 0x01, 0x01,
+  0x01, 0x02, 0x03, 0x01,
+  0x01, 0x01, 0x02, 0x03,
+  0x03, 0x01, 0x01, 0x02
+};
+
+extern const uint8_t inv_matriceMix[]={
+  0x0E, 0x0B, 0x0D, 0x09,
+  0x09, 0x0E, 0x0B, 0x0D,
+  0x0D, 0x09, 0x0E, 0x0B,
+  0x0B, 0x0D, 0x09, 0x0E
+};

@@ -7,6 +7,8 @@ Le fichier utils.c contient des fonctions qui seront utiles à AES mais ne lui
 
 Le fichier aes.c contient les fonctions propres au fonctionnement AES.
 
+Le fichier keyExpansion.c contient les fonctions de manipulation de clé.
+
 Le fichier main.c est le fichier principale qui se servira des autres pour
 fonctionner.
 
