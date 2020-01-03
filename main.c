@@ -27,7 +27,13 @@ int main(int argc, char* argv[]) {
     uint8_t* tab_inv_sub = invSubBytes(tab_sub);
 
     print(tab_inv_sub);
+
+
+    printf("\n\nmixColumns\n");
+    print(mixColumns(tab));
     printf("\n\n\n");
+    print(mixColumns(shiftRows(tab)));
+
 
   // Test invShiftRows
     uint8_t* tab_origin = invShiftRows(tab_inv_sub);
