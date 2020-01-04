@@ -59,9 +59,8 @@ void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
     int keyWords = (KEY_LENGTH / 32); // 4 pour la clef de 128 bits
 
     // Copier la clef dans le extKey et le transformer en Mots de Bytes
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < (KEY_LENGTH / 32); i++) {
         uint8_t word[4] = { key[i * 4], key[i * 4 + 1], key[i * 4 + 2], key[i * 4 + 3]};
-        //extKeyW[i] = word[i];
         memcpy (&extKeyW[i], word, sizeof(uint8_t) * 4);
 
         printWord(word);

@@ -60,25 +60,50 @@ const uint8_t inv_matriceMix[16]={
   0x0B, 0x0D, 0x09, 0x0E
 };
 
-void cipher(uint8_t in[16], uint8_t out[16], uint8_t* extKey) {
+void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     uint8_t state[16];
 
     memcpy (state, in, sizeof(uint8_t) * 16);
-    uint8_t* key = getKey(0, extKey);
+    uint8_t key[4][4];
+    memcpy(&key[0], &extKey[0], sizeof(uint8_t) * 4);
+    memcpy(&key[1], &extKey[1], sizeof(uint8_t) * 4);
+    memcpy(&key[2], &extKey[2], sizeof(uint8_t) * 4);
+    memcpy(&key[3], &extKey[3], sizeof(uint8_t) * 4);
+
+    printf("%i", key[0][0]);
+
+    printf("\nState Init: \n");
+    printVer(state);
+
+    printf("\nKey: \n");
+    printVer(key);
+
 
     addRoundKey(state, key);
     for(int i = 1; i < NB_ROUNDS-1; ++i) {
-        subBytes(state);
-        shiftRows(state);
-        mixColumns(state);
-        key = getKey(i, extKey);
+        printf("\nStart of Round: \n");
+        printVer(state);
+
+        memcpy(state, subBytes(state), sizeof(uint8_t) * 16);
+        printf("\nAfter SubBytes: \n");
+        printVer(state);
+
+        memcpy(state, shiftRows(state), sizeof(uint8_t) * 16);
+        printf("\nAfter ShiftRows: \n");
+        printVer(state);
+
+        memcpy(state, mixColumns(state), sizeof(uint8_t) * 16);
+        printf("\nAfter MixCollumns: \n");
+        printVer(state);
+
+        memcpy(key, &extKey[i], sizeof(uint8_t) * 4);
         addRoundKey(state, key);
     }
 
-    subBytes(state);
-    shiftRows(state);
+    memcpy(state, subBytes(state), sizeof(uint8_t) * 16);
+    memcpy(state, shiftRows(state), sizeof(uint8_t) * 16);
 
-    key = getKey(NB_ROUNDS, extKey);
+    memcpy(key, &extKey[NB_ROUNDS+1], sizeof(uint8_t) * 4);
     addRoundKey(state, key);
 
     memcpy (out, state, sizeof(uint8_t) * 16);
@@ -92,11 +117,16 @@ void subWord(uint8_t word[4]) {
     }
 }
 
-void addRoundKey(uint8_t* state, uint8_t* keyWord) {
-    state[0] = state[0] ^ keyWord[0];
-    state[1] = state[1] ^ keyWord[1];
-    state[2] = state[2] ^ keyWord[2];
-    state[3] = state[2] ^ keyWord[3];
+void addRoundKey(uint8_t* state, uint8_t key[4][4]) {
+    printf("%i", key[0][0]);
+    printf("%i", state[0]);
+
+    for(int i = 0; i < 4; ++i) {
+        state[4 * i]   = state[4 * i]   ^ key[i][0];
+        state[4 * i+1] = state[4 * i+1] ^ key[i][1];
+        state[4 * i+2] = state[4 * i+2] ^ key[i][2];
+        state[4 * i+3] = state[4 * i+3] ^ key[i][3];
+    }
 }
 
 // Chiffrement d'un matrice
@@ -127,16 +157,20 @@ uint8_t invSubByte(uint8_t val) {
   return inv_sbox[val];
 }
 
+int stateIndex(int row, int collumn) {
+    return (collumn * 4 + row);
+}
+
 uint8_t* shiftRows(uint8_t* matrice)
 {
   // chaque ligne est inversée
    int shift = 0; // le décalage augmente de 1 a chaque tour de boucle (0 à 3)
    uint8_t* res = malloc(sizeof(uint8_t)*16);
-   for(int i = 0; i < 16; i+=4) { // Pour changer de ligne, on incrémente de 4
-     res[i] = matrice[i+(shift%4)];
-     res[i+1] = matrice[i+(shift+1)%4];
-     res[i+2] = matrice[i+(shift+2)%4];
-     res[i+3] = matrice[i+(shift+3)%4];
+   for(int i = 0; i < 4; i++) { // Pour changer de ligne, on incrémente de 4
+     res[stateIndex(i, 0)] =  matrice[stateIndex(i, (shift + 0) % 4)];
+     res[stateIndex(i, 1)] =  matrice[stateIndex(i, (shift + 1) % 4)];
+     res[stateIndex(i, 2)] =  matrice[stateIndex(i, (shift + 2) % 4)];
+     res[stateIndex(i, 3)] =  matrice[stateIndex(i, (shift + 3) % 4)];
      shift++;
    }
    return res;

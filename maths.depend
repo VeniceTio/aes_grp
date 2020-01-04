@@ -1,14 +1,16 @@
 # depslib dependency file v1.0
-1577400496 source:d:\coding\univ\m32\m32_62_aes\maths\aes.c
+1578166610 source:d:\coding\univ\m32\m32_62_aes\maths\aes.c
 	<stddef.h>
 	<stdlib.h>
+	<string.h>
 	"aes.h"
 	"utils.h"
+	"keyExpansion.h"
 
-1578150230 d:\coding\univ\m32\m32_62_aes\maths\aes.h
+1578158136 d:\coding\univ\m32\m32_62_aes\maths\aes.h
 	<stdint.h>
 
-1578073203 source:d:\coding\univ\m32\m32_62_aes\maths\main.c
+1578156069 source:d:\coding\univ\m32\m32_62_aes\maths\main.c
 	"aes.h"
 	"utils.h"
 	"keyExpansion.h"
@@ -18,7 +20,7 @@
 	<stdint.h>
 	<stddef.h>
 
-1578073203 source:d:\coding\univ\m32\m32_62_aes\maths\utils.c
+1578156532 source:d:\coding\univ\m32\m32_62_aes\maths\utils.c
 	"utils.h"
 	"math.h"
 	<stdio.h>
@@ -68,7 +70,7 @@
 	<stdlib.h>
 	"aes.h"
 
-1578146979 source:d:\coding\univ\m32\m32_62_aes\maths\keyexpansion.c
+1578158993 source:d:\coding\univ\m32\m32_62_aes\maths\keyexpansion.c
 	"keyExpansion.h"
 	"aes.h"
 	"utils.h"

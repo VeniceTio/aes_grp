@@ -31,10 +31,19 @@ void printWord(uint8_t* word) {
 
 //***********************************************************
 //Un overload de print pour afficher les uint de facon plus graphique
+void printVer(uint8_t* display){
+    for(size_t i = 0; i < 4; i++)
+    {
+        printf("[%x, %x, %x, %x]\n", display[i] & 0xff, display[i+4] & 0xff, display[i+8] & 0xff, display[i+12] & 0xff);
+    }
+}
+
+//***********************************************************
+//Un overload de print pour afficher les uint de facon plus graphique
 void print(uint8_t* display){
     for(size_t i = 0; i < 16; i+=4)
     {
-        printf("[%c, %c, %c, %c]\n", display[i], display[i+1], display[i+2], display[i+3]);
+        printf("[%x, %x, %x, %x]\n", display[i] & 0xff, display[i+1] & 0xff, display[i+2] & 0xff, display[i+3] & 0xff);
     }
 }
 

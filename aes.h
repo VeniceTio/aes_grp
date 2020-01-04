@@ -8,7 +8,7 @@ uint8_t subByte(uint8_t val);
 uint8_t* invSubBytes(uint8_t* word);
 uint8_t invSubByte(uint8_t val);
 
-void addRoundKey(uint8_t* state, uint8_t* keyWord);
+void addRoundKey(uint8_t* state, uint8_t key[4][4]);
 
 uint8_t* shiftRows(uint8_t* word);
 uint8_t* mixColumns(uint8_t* word);
