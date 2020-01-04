@@ -93,6 +93,7 @@ void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
         //Le nouveau mot dans la clef est newWord
         memcpy (&extKeyW[i], newWord, sizeof(uint8_t) * 4);
     }
+    printf("\n");
 }
 
 //***********************************************************
