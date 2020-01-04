@@ -1,6 +1,7 @@
 #include "aes.h"
 #include "utils.h"
 #include "keyExpansion.h"
+#include "file.h"
 
 #include <stdio.h>
 
@@ -117,6 +118,9 @@ int main(int argc, char* argv[]) {
 
   printf("\nOutput \n");
   print(output);
+
+  printf("%s\n", getTextFromFile("test.txt"));
+  printf("%d\n", fileSize("test.txt"));
 
   return 0;
 }
