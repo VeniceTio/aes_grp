@@ -28,16 +28,21 @@ int main(int argc, char* argv[]) {
 
     print(tab_inv_sub);
 
+    // Test multiply
+    uint8_t* tab_multiply = multiply(tab);
+    printf("\nmultiply :\n");
+    print(tab_multiply);
 
     printf("\n\nmixColumns\n");
     print(mixColumns(tab));
-    printf("\n\n\n");
+    printf("\n");
+    printf("mixcolumns(shiftRows)\n");
     print(mixColumns(shiftRows(tab)));
 
 
   // Test invShiftRows
     uint8_t* tab_origin = invShiftRows(tab_inv_sub);
-
+    printf("invShiftRows\n");
     print(tab_origin);
     printf("\n\n\n");
 

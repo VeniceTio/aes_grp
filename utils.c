@@ -34,7 +34,7 @@ void printWord(uint8_t* word) {
 void print(uint8_t* display){
     for(size_t i = 0; i < 16; i+=4)
     {
-        printf("[%c, %c, %c, %c]\n", display[i], display[i+1], display[i+2], display[i+3]);
+        printf("[%d, %d, %d, %d]\n", display[i], display[i+1], display[i+2], display[i+3]);
     }
 }
 
@@ -49,6 +49,50 @@ struct HexDigits getHexDigits(uint8_t byte) {
 
     return digits;
 }
+uint8_t shiftMonome(uint8_t monome) {
+    // réalise un shit de 1 sur un monome
+    uint8_t verif = 128; // 1000 0000
+    if((verif & monome) != 0) {
+        uint8_t a8 = 27; // 0001 1011
+        return a8;
+    } else {
+        return monome << 1;
+    }
+}
+
+uint8_t shiftPolynome(uint8_t polynome) {
+    // Réalise la multiplication a*(P)
+    uint8_t res = 0; // 0000 0000
+    for(int i = 0; i < 8; i++) {
+        uint8_t verif = (1 << i); // 0000 0001 << i
+        if((verif & polynome) != 0) {
+            res = res^shiftMonome(verif);
+        }
+    }
+    return res;
+}
+
+uint8_t shiftKPolynome(int k, uint8_t polynome) {
+    // Réalise la multiplication a^k(P)
+    uint8_t res = polynome;
+    for(int i = 0; i < k; i++) {
+        res = shiftPolynome(res);
+    }
+    return res;
+}
+
+uint8_t multiplication(uint8_t o1, uint8_t o2) {
+    // Réalise la multiplication entre deux octets
+    uint8_t res = 0; // 0000 0000
+    for(int i = 0; i < 8; i++) {
+        uint8_t verif = 1 << i; //0000 0001 << i
+        if((o1 & verif) != 0) {
+            res = res^shiftKPolynome(i,o2);
+        }
+    }
+    return res;
+}
+
 
 //***********************************************************
 //Multiplication de deux matrices
