@@ -1,6 +1,3 @@
-#include <stddef.h>
-#include <stdlib.h>
-
 #include "aes.h"
 #include "utils.h"
 
@@ -242,6 +239,3 @@ uint8_t* getColumn(uint8_t* matrice, int pos){
 
   return state;
 }*/
-
-
-
