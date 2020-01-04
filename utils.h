@@ -13,3 +13,6 @@ void printVer(uint8_t* display);
 void print(uint8_t* display);
 uint8_t multiplication(uint8_t o1, uint8_t o2);
 struct HexDigits getHexDigits(uint8_t byte);
+uint8_t shiftMonome(uint8_t monome);
+uint8_t shiftPolynome(uint8_t polynome);
+uint8_t shiftNPolynome(int k, uint8_t polynome);
