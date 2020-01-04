@@ -3,5 +3,5 @@
 #include <stdio.h>
 #include <stdint.h>
 
-char* getTextFromFile(char* name);
+uint8_t* getTextFromFile(char* name);
 int fileSize(char* name);
