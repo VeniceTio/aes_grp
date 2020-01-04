@@ -92,32 +92,3 @@ uint8_t multiplication(uint8_t o1, uint8_t o2) {
     return res;
 }
 
-
-//***********************************************************
-//Multiplication de deux matrices
-/*int** multiplyMatrice(int tab1[4][4], int tab2[4][4]){
-    if(length2(tab1) == length(tab2[0])){
-        int dim1x = length2(tab1);
-        int dim1y = length(tab1[0]);
-        int dim2x = length2(tab1);
-        int dim2y = length(tab1[0]);
-        uint8_t** mul = malloc(sizeof(uint8_t) * dim1x);
-        for(int i = 0; i < dim1x; i++)
-        {
-            for(int j = 0; j < dim2y; j++)
-            {
-                mul[i][j]=0;
-                for(int k = 0; k < dim1y; k++)
-                {
-                    mul[i] += tab1[i][k] * tab2[k][j];
-                    //[i][j]
-                }
-            }
-        }
-        return mul;
-    }
-    else{
-      return NULL;
-    }
-
-}*/
