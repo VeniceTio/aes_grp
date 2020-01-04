@@ -34,7 +34,7 @@ void printWord(uint8_t* word) {
 void print(uint8_t* display){
     for(size_t i = 0; i < 16; i+=4)
     {
-        printf("[%d, %d, %d, %d]\n", display[i], display[i+1], display[i+2], display[i+3]);
+        printf("[%c, %c, %c, %c]\n", display[i], display[i+1], display[i+2], display[i+3]);
     }
 }
 
