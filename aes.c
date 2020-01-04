@@ -200,14 +200,19 @@ uint8_t* multiply(uint8_t* column){
 
 
 uint8_t* invMultiply(uint8_t* column){
-  uint8_t* res = malloc(sizeof(uint8_t)*4);
+    uint8_t* res = malloc(sizeof(uint8_t)*4);
 
-  for (size_t i = 0; i < 16; i+=4) {
-    res[0] = res[0] & inv_matriceMix[i];
-    res[1] = res[1] & inv_matriceMix[i+1];
-    res[2] = res[2] & inv_matriceMix[i+2];
-    res[3] = res[3] & inv_matriceMix[i+3];
-  }
+    res[0] = 0;
+    res[1] = 0;
+    res[2] = 0;
+    res[3] = 0;
+
+    for(int i=0;i<4;i++){
+        res[0] = res[0] ^ multiplication(column[i],inv_matriceMix[0+i]);
+        res[1] = res[1] ^ multiplication(column[i],inv_matriceMix[4+i]);
+        res[2] = res[2] ^ multiplication(column[i],inv_matriceMix[8+i]);
+        res[3] = res[3] ^ multiplication(column[i],inv_matriceMix[12+i]);
+    }
 
   return res;
 }
