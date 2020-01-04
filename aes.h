@@ -20,6 +20,7 @@ uint8_t* invMixColumns(uint8_t* word);
 uint8_t* multiply(uint8_t* column);
 uint8_t* invMultiply(uint8_t* column);
 uint8_t* getColumn(uint8_t* matrice, int pos);
+void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey);
 
 #ifndef GLOBALVAR_AES
 #define GLOBALVAR_AES
