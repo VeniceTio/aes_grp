@@ -97,19 +97,26 @@ int main(int argc, char* argv[]) {
     }
 
     // Allocation memoire de 4 Mots Binaires de 4 uint8_t (byte) chacun
-    uint8_t extKey[4][4];
+    uint8_t extKey[NB_ROUNDS+1][4];
 
     uint8_t testKey[16] = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
 
     // Etendre la clef en (NbRound + 1) clefs
     keyExpansion(testKey, (uint8_t**)extKey);
 
-    for(int i = 0; i < (KEY_LENGTH / 32) * (NB_ROUNDS+1); ++i) {
+    /*for(int i = 0; i < (KEY_LENGTH / 32) * (NB_ROUNDS+1); ++i) {
         if(i % 4 == 0)
             printf("\n Key:\n");
-        //printWord(&extKey[i]);
         printWordHex(&extKey[i]);
-    }
+    }*/
+
+  uint8_t input[16] = {0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d, 0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34};
+  uint8_t output[16];
+
+  cipher(input, output, extKey);
+
+  printf("\nOutput \n");
+  print(output);
 
   return 0;
 }
