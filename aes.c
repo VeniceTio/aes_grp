@@ -158,13 +158,13 @@ uint8_t* invMixColumns(uint8_t* matrice){
   uint8_t* new_matrice = malloc(sizeof(uint8_t)*16);
   uint8_t* temp = malloc(sizeof(uint8_t)*4);
 
-  for (size_t i = 0; i < 16; i+=4) {
+  for (size_t i = 0; i < 4; i++) {
     temp = getColumn(matrice, i);
     temp = invMultiply(temp);
-    new_matrice[i] = temp[i];
-    new_matrice[i+1] = temp[i+1];
-    new_matrice[i+2] = temp[i+2];
-    new_matrice[i+3] = temp[i+3];
+    new_matrice[i] = temp[0];
+    new_matrice[i+4] = temp[1];
+    new_matrice[i+8] = temp[2];
+    new_matrice[i+12] = temp[3];
   }
 
   free(temp);
@@ -193,21 +193,20 @@ uint8_t* multiply(uint8_t* column){
   return res;
 }
 
-
-
-
-
-
-
 uint8_t* invMultiply(uint8_t* column){
-  uint8_t* res = malloc(sizeof(uint8_t)*4);
+    uint8_t* res = malloc(sizeof(uint8_t)*4);
 
-  for (size_t i = 0; i < 16; i+=4) {
-    res[0] = res[0] & inv_matriceMix[i];
-    res[1] = res[1] & inv_matriceMix[i+1];
-    res[2] = res[2] & inv_matriceMix[i+2];
-    res[3] = res[3] & inv_matriceMix[i+3];
-  }
+    res[0] = 0;
+    res[1] = 0;
+    res[2] = 0;
+    res[3] = 0;
+
+    for(int i=0;i<4;i++){
+        res[0] = res[0] ^ multiplication(column[i],inv_matriceMix[0+i]);
+        res[1] = res[1] ^ multiplication(column[i],inv_matriceMix[4+i]);
+        res[2] = res[2] ^ multiplication(column[i],inv_matriceMix[8+i]);
+        res[3] = res[3] ^ multiplication(column[i],inv_matriceMix[12+i]);
+    }
 
   return res;
 }

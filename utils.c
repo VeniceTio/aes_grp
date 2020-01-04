@@ -34,7 +34,7 @@ void printWord(uint8_t* word) {
 void print(uint8_t* display){
     for(size_t i = 0; i < 16; i+=4)
     {
-        printf("[%d, %d, %d, %d]\n", display[i], display[i+1], display[i+2], display[i+3]);
+        printf("[%c, %c, %c, %c]\n", display[i], display[i+1], display[i+2], display[i+3]);
     }
 }
 
@@ -72,8 +72,7 @@ uint8_t shiftPolynome(uint8_t polynome) {
     return res;
 }
 
-uint8_t shiftKPolynome(int k, uint8_t polynome) {
-    // Réalise la multiplication a^k(P)
+uint8_t shiftNPolynome(int k, uint8_t polynome) {
     uint8_t res = polynome;
     for(int i = 0; i < k; i++) {
         res = shiftPolynome(res);
@@ -87,38 +86,9 @@ uint8_t multiplication(uint8_t o1, uint8_t o2) {
     for(int i = 0; i < 8; i++) {
         uint8_t verif = 1 << i; //0000 0001 << i
         if((o1 & verif) != 0) {
-            res = res^shiftKPolynome(i,o2);
+            res = res^shiftNPolynome(i,o2);
         }
     }
     return res;
 }
 
-
-//***********************************************************
-//Multiplication de deux matrices
-/*int** multiplyMatrice(int tab1[4][4], int tab2[4][4]){
-    if(length2(tab1) == length(tab2[0])){
-        int dim1x = length2(tab1);
-        int dim1y = length(tab1[0]);
-        int dim2x = length2(tab1);
-        int dim2y = length(tab1[0]);
-        uint8_t** mul = malloc(sizeof(uint8_t) * dim1x);
-        for(int i = 0; i < dim1x; i++)
-        {
-            for(int j = 0; j < dim2y; j++)
-            {
-                mul[i][j]=0;
-                for(int k = 0; k < dim1y; k++)
-                {
-                    mul[i] += tab1[i][k] * tab2[k][j];
-                    //[i][j]
-                }
-            }
-        }
-        return mul;
-    }
-    else{
-      return NULL;
-    }
-
-}*/
