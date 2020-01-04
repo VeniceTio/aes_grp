@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 void subWord(uint8_t word[4]);
 

@@ -27,11 +27,28 @@ int main(int argc, char* argv[]) {
     uint8_t* tab_inv_sub = invSubBytes(tab_sub);
 
     print(tab_inv_sub);
-    printf("\n\n\n");
+
+    // Test multiply
+    uint8_t* tab_multiply = multiply(tab);
+    printf("\nmultiply :\n");
+    print(tab_multiply);
+    printf("\nINVmultiply :\n");
+    print(invMultiply(tab_multiply));
+
+    printf("\n\nmixColumns\n");
+    print(mixColumns(tab));
+    printf("\n\nINVmixColumns\n");
+    print(invMixColumns(mixColumns(tab)));
+    printf("\n");
+    printf("mixcolumns(shiftRows)\n");
+    print(mixColumns(shiftRows(tab)));
+    printf("invShiftRows(invMixColumn(mixcolumns(shiftRows)))\n");
+    print(invShiftRows(invMixColumns(mixColumns(shiftRows(tab)))));
+
 
   // Test invShiftRows
     uint8_t* tab_origin = invShiftRows(tab_inv_sub);
-
+    printf("invShiftRows\n");
     print(tab_origin);
     printf("\n\n\n");
 
