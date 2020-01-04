@@ -253,8 +253,8 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
 
 
     addRoundKey(state, key);
-    for(int i = 1; i < NB_ROUNDS-1; ++i) {
-        printf("\nStart of Round: \n");
+    for(int i = 1; i < NB_ROUNDS; ++i) {
+        printf("\nStart of Round: %i\n", i);
         printVer(state);
 
         memcpy(state, subBytes(state), sizeof(uint8_t) * 16);
@@ -269,17 +269,43 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
         printf("\nAfter MixCollumns: \n");
         printVer(state);
 
-        memcpy(key, &extKey[i], sizeof(uint8_t) * 4);
+        memcpy(&key[0], &extKey[(i * 4)+0], sizeof(uint8_t) * 4);
+        memcpy(&key[1], &extKey[(i * 4)+1], sizeof(uint8_t) * 4);
+        memcpy(&key[2], &extKey[(i * 4)+2], sizeof(uint8_t) * 4);
+        memcpy(&key[3], &extKey[(i * 4)+3], sizeof(uint8_t) * 4);
+
+        printf("\nKey: \n");
+        printVer(key);
+
         addRoundKey(state, key);
     }
 
-    memcpy(state, subBytes(state), sizeof(uint8_t) * 16);
-    memcpy(state, shiftRows(state), sizeof(uint8_t) * 16);
+    printf("ROUND 10");
 
-    memcpy(key, &extKey[NB_ROUNDS+1], sizeof(uint8_t) * 4);
+    memcpy(state, subBytes(state), sizeof(uint8_t) * 16);
+    printf("\nAfter SubBytes: \n");
+    printVer(state);
+
+    memcpy(state, shiftRows(state), sizeof(uint8_t) * 16);
+    printf("\nAfter ShiftRows: \n");
+    printVer(state);
+
+    memcpy(&key[0], &extKey[(NB_ROUNDS) * 4 +0], sizeof(uint8_t) * 4);
+    memcpy(&key[1], &extKey[(NB_ROUNDS) * 4 +1], sizeof(uint8_t) * 4);
+    memcpy(&key[2], &extKey[(NB_ROUNDS) * 4 +2], sizeof(uint8_t) * 4);
+    memcpy(&key[3], &extKey[(NB_ROUNDS) * 4 +3], sizeof(uint8_t) * 4);
+
+    printf("\nKey: \n");
+    printVer(key);
+
     addRoundKey(state, key);
+    printf("\nAfter AddKey: \n");
+    printVer(state);
 
     memcpy (out, state, sizeof(uint8_t) * 16);
+
+    printf("\nOUTPUT: \n");
+    printVer(out);
 }
 
 /*uint8_t* invCipher(uint8_t cipher_matrice[4])
