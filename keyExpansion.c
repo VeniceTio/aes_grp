@@ -4,6 +4,17 @@
 
 uint8_t rCon[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36 };
 
+uint8_t* getKey(int keyNum, uint8_t* extKey) {
+    uint8_t* key = malloc(sizeof(uint8_t) * 4);
+
+    key[0] = extKey[keyNum * 4];
+    key[1] = extKey[(keyNum * 4) + 1];
+    key[2] = extKey[(keyNum * 4) + 2];
+    key[3] = extKey[(keyNum * 4) + 3];
+
+    return key;
+}
+
 //***********************************************************
 // Genere un Mot de 4 Bytes a partir du tableau de rCon
 uint8_t* getRConWord(int i) {

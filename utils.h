@@ -12,5 +12,3 @@ void printWordHex(uint8_t* word);
 void print(uint8_t* display);
 int** multiplyMatrice(int tab1[4][4], int tab2[4][4]);
 struct HexDigits getHexDigits(uint8_t byte);
-
-void print(uint8_t* display);
