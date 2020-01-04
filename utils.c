@@ -72,8 +72,7 @@ uint8_t shiftPolynome(uint8_t polynome) {
     return res;
 }
 
-uint8_t shiftKPolynome(int k, uint8_t polynome) {
-    // Réalise la multiplication a^k(P)
+uint8_t shiftNPolynome(int k, uint8_t polynome) {
     uint8_t res = polynome;
     for(int i = 0; i < k; i++) {
         res = shiftPolynome(res);
@@ -87,7 +86,7 @@ uint8_t multiplication(uint8_t o1, uint8_t o2) {
     for(int i = 0; i < 8; i++) {
         uint8_t verif = 1 << i; //0000 0001 << i
         if((o1 & verif) != 0) {
-            res = res^shiftKPolynome(i,o2);
+            res = res^shiftNPolynome(i,o2);
         }
     }
     return res;
