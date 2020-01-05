@@ -113,14 +113,20 @@ int main(int argc, char* argv[]) {
 
   uint8_t input[16] = {0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d, 0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34};
   uint8_t output[16];
+  uint8_t decipher[16];
 
   cipher(input, output, extKey);
 
   printf("\nOutput \n");
   print(output);
 
-  printf("%s\n", getTextFromFile("test.txt"));
-  printf("%d\n", fileSize("test.txt"));
+  //printf("%s\n", getTextFromFile("test.txt"));
+  //printf("%d\n", fileSize("test.txt"));
+
+  printf("\n------------------INVERSE CIPHER DECIPHER-----------------------\n");
+  invCipher(output, decipher, extKey);
+  printf("\nINPUT\n");
+  printVer(input);
 
   return 0;
 }
