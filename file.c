@@ -12,16 +12,12 @@ int fileSize(char* name){
 }
 
 uint8_t* getTextFromFile(char* name){
-  FILE* file = NULL;
   uint8_t* text = malloc(sizeof(uint8_t) * fileSize(name));
 
-  if((file = fopen(name, "r")) == NULL){
-    printf("This file doesn't exists\n");
-    fclose(file);
-    exit(-1);
-  }
+  int fd = open(name, 0);
 
-  fscanf(file, "%s", text);
+  if(fd != -1)
+    read(fd, text, fileSize(name));
 
   return text;
 }
