@@ -120,8 +120,8 @@ int main(int argc, char* argv[]) {
   printf("\nOutput \n");
   print(output);
 
-  //printf("%s\n", getTextFromFile("test.txt"));
-  //printf("%d\n", fileSize("test.txt"));
+  printf("%s\n", getTextFromFile("test.txt"));
+  printf("%d\n", fileSize("test.txt"));
 
   printf("\n------------------INVERSE CIPHER DECIPHER-----------------------\n");
   invCipher(output, decipher, extKey);

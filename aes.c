@@ -119,8 +119,8 @@ uint8_t invSubByte(uint8_t val) {
   return inv_sbox[val];
 }
 
-int stateIndex(int row, int collumn) {
-    return (collumn * 4 + row);
+int stateIndex(int row, int column) {
+    return (column * 4 + row);
 }
 
 uint8_t* shiftRows(uint8_t* matrice)
@@ -158,6 +158,7 @@ uint8_t* getColumn(uint8_t* matrice, int pos){
     }
     return column;
 }
+
 uint8_t* getRow(uint8_t* matrice, int pos){
     uint8_t* row = malloc(sizeof(uint8_t)*4);
     for(int i = pos*4; i < (pos*4)+4; i++) {
@@ -285,7 +286,7 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
         printVer(state);
 
         memcpy(state, mixColumns(state), sizeof(uint8_t) * 16);
-        printf("\nAfter MixCollumns: \n");
+        printf("\nAfter Mixcolumns: \n");
         printVer(state);
 
         memcpy(&key[0], &extKey[(i * 4)+0], sizeof(uint8_t) * 4);
@@ -336,8 +337,7 @@ void copyVertical(uint8_t* input, uint8_t* output) {
     }
 }
 
-void invCipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey)
-{
+void invCipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey){
     uint8_t state[16];
     uint8_t key[4][4];
 
@@ -385,7 +385,7 @@ void invCipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey)
         print(state);
 
         memcpy(state, invMixColumns(state), sizeof(uint8_t) * 16);
-        printf("\nAfter MixCollumns: \n");
+        printf("\nAfter Mixcolumns: \n");
         print(state);
     }
     printf("ROUND 10");
