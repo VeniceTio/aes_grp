@@ -5,30 +5,53 @@
 
 #include <stdio.h>
 
+// void changeTab(uint8_t* tab){
+//   uint8_t temp = malloc(16*sizeof(uint8_t));
+//   memcpy(temp, tab, sizeof(uint8_t) * 4);
+//   for(int i =0;i<16;i++){
+//
+//   }
+// }
+
 int main(int argc, char const *argv[]) {
 
   uint8_t* text = getTextFromFile("alice.txt");
   printf("%s\n", text);
 
-  int size = fileSize("alice.txt");
-  printf("%d\n", size);
+  int sizeFile = fileSize("alice.txt");
+  printf("%d\n", sizeFile);
 
   uint8_t in[16], out[16];
   FILE* file = fopen("aliceDecipher.txt", "a");
 
-  uint8_t extKey[NB_ROUNDS+1][4];
+  uint8_t** extKey[(NB_ROUNDS+1) * 4][4];
   uint8_t key[16] =  {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
-  keyExpansion(key, (uint8_t**)extKey);
+  keyExpansion(key, extKey);
+  int fin = 0;
 
-  for (int i = 0; i < size; i++) {
+  for (int i = 0; i < sizeFile; i++) {
     if(i % 16 == 0 && i != 0){
-      invCipher(in, out, (uint8_t**)extKey);
+      uint8_t* tab = malloc(16*sizeof(uint8_t));
+      invCipher(in, out, extKey);
 
-      fwrite(out, 16, sizeof(out), file);
+      copyVertical(out,tab);
+      fwrite(tab, 16, sizeof(uint8_t), file);
+      free(tab);
     }
-
     in[i % 16] = text[i];
+    if (i==sizeFile-1){
+      uint8_t* tab = malloc(16*sizeof(uint8_t));
+      invCipher(in, out, extKey);
+
+      copyVertical(out,tab);
+      fwrite(tab, 16, sizeof(uint8_t), file);
+      free(tab);
+    }
   }
 
+  uint8_t* decipherText = getTextFromFile("aliceDecipher.txt");
+  printf("%s\n", decipherText);
+
+  remove("aliceDecipher.txt");
   return 0;
 }
