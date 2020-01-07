@@ -1,6 +1,6 @@
 CC=gcc
 
-all: main main.o aes.o utils.o keyExpansion.o file.o
+all: main main.o mainAlice.o aes.o utils.o keyExpansion.o file.o
 
 main: main.o aes.o utils.o keyExpansion.o file.o
 	gcc -o main -Wall main.o aes.o utils.o keyExpansion.o file.o

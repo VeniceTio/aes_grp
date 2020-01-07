@@ -115,7 +115,7 @@ int main(int argc, char* argv[]) {
   uint8_t output[16];
   uint8_t decipher[16];
 
-  cipher(input, output, extKey);
+  cipher(input, output, (uint8_t**)extKey);
 
   printf("\nOutput \n");
   print(output);
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
   printf("%d\n", fileSize("test.txt"));
 
   printf("\n------------------INVERSE CIPHER DECIPHER-----------------------\n");
-  invCipher(output, decipher, extKey);
+  invCipher(output, decipher, (uint8_t**)extKey);
   printf("\nINPUT\n");
   printVer(input);
 
