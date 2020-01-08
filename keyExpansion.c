@@ -63,7 +63,7 @@ void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
         uint8_t word[4] = { key[i * 4], key[i * 4 + 1], key[i * 4 + 2], key[i * 4 + 3]};
         memcpy (&extKeyW[i], word, sizeof(uint8_t) * 4);
 
-        printWord(word);
+        print_word(word);
     }
 
     // Boucle d'extention de clef
@@ -78,7 +78,7 @@ void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
             rotWord(temp);
             sub_word(temp);
             uint8_t* rCon = getRConWord(i/keyWords);
-            temp = xorWords(temp, rCon );
+            temp = xor_words(temp, rCon );
         }
         // ...
         else if(keyWords > 6 && (i % keyWords) == 4) {
@@ -88,7 +88,7 @@ void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
         //Xor le mot (de la meme position) de la clef precedente avec le mot temp
         uint8_t* newWord = malloc(sizeof(uint8_t) * 4);
         memcpy (newWord, &extKeyW[i-keyWords], sizeof(uint8_t) * 4);
-        newWord = xorWords(newWord, temp);
+        newWord = xor_words(newWord, temp);
 
         //Le nouveau mot dans la clef est newWord
         memcpy (&extKeyW[i], newWord, sizeof(uint8_t) * 4);
