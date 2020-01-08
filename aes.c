@@ -46,33 +46,36 @@ const uint8_t inv_sbox[256] = {
   0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0, 0xc8, 0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61,
   0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d };
 
-const uint8_t matriceMix[16]={
+const uint8_t matrice_mix[16]={
   0x02, 0x03, 0x01, 0x01,
   0x01, 0x02, 0x03, 0x01,
   0x01, 0x01, 0x02, 0x03,
   0x03, 0x01, 0x01, 0x02
 };
 
-const uint8_t inv_matriceMix[16]={
+const uint8_t inv_matrice_mix[16]={
   0x0E, 0x0B, 0x0D, 0x09,
   0x09, 0x0E, 0x0B, 0x0D,
   0x0D, 0x09, 0x0E, 0x0B,
   0x0B, 0x0D, 0x09, 0x0E
 };
 
-
-
-//***********************************************************
-//Applique la S-box sur un mot de 4 Bytes
-void subWord(uint8_t word[4]) {
+/*
+*   Applique la S-box sur un mot de 4 Bytes
+*   - word : mot de 4 uint8_t
+*/
+void sub_word(uint8_t word[4]) {
     for(int i = 0; i < 4; ++i) {
         word[i] = sbox[word[i]];
     }
 }
 
-void addRoundKeyVer(uint8_t* state, uint8_t key[4][4]) {
-    //printf("%i", key[0][0]);
-    //printf("%i", state[0]);
+/*
+*
+*   - state :
+*   - key :
+*/
+void add_round_keyVer(uint8_t* state, uint8_t key[4][4]) {
 
     for(int i = 0; i < 4; ++i) {
         state[4 * i]   = state[4 * i]   ^ key[i][0];
@@ -82,7 +85,12 @@ void addRoundKeyVer(uint8_t* state, uint8_t key[4][4]) {
     }
 }
 
-void addRoundKey(uint8_t* state, uint8_t key[4][4]) {
+/*
+*
+*   - state :
+*   - key :
+*/
+void add_round_key(uint8_t* state, uint8_t key[4][4]) {
     for(int i = 0; i < 4; ++i) {
         state[i + 0]   = state[i + 0]   ^ key[i][0];
         state[i + 4] = state[i + 4] ^ key[i][1];
@@ -91,57 +99,78 @@ void addRoundKey(uint8_t* state, uint8_t key[4][4]) {
     }
 }
 
-// Chiffrement d'une matrice
-uint8_t* subBytes(uint8_t* matrice) {
+/*
+*   Chiffrement d'une matrice
+*   - matrice : la matrice à chiffrer
+*/
+uint8_t* sub_bytes(uint8_t* matrice) {
   uint8_t* res = malloc(sizeof(uint8_t)*16);
   for(int i = 0; i < 16; i++) {
-    res[i] = subByte(matrice[i]);
+    res[i] = sub_byte(matrice[i]);
   }
   return res;
 }
 
-// Retourne une valeur du tableau sbox
-uint8_t subByte(uint8_t val) {
+/*
+*   Retourne une valeur du tableau sbox
+*   - val : la valeur cherché dans le tableau
+*/
+uint8_t sub_byte(uint8_t val) {
   return sbox[val];
 }
 
-// Déchiffrement d'une matrice
-uint8_t* invSubBytes(uint8_t* matrice) {
+/*
+*   Déchiffrement d'une matrice
+*   - matrice :
+*/
+uint8_t* inv_sub_bytes(uint8_t* matrice) {
   uint8_t* res = malloc(sizeof(uint8_t)*16);
   for(int i = 0; i < 16; i++) {
-    res[i] = invSubByte(matrice[i]);
+    res[i] = inv_sub_byte(matrice[i]);
   }
   return res;
 }
 
-// Retourne une valeur du tableau inv_sbox
-uint8_t invSubByte(uint8_t val) {
+/*
+*   Retourne une valeur du tableau inv_sbox
+*   - val : la valeur à récupérer
+*/
+uint8_t inv_sub_byte(uint8_t val) {
   return inv_sbox[val];
 }
 
-// Retourne la position dans le tableau d'une valeur à partir de ces coordoonées
-int stateIndex(int row, int column) {
+/*
+*   Retourne la position dans le tableau d'une valeur à partir de ces coordoonées
+*   - row : la ligne voulue
+*   - column : la colonne voulue
+*/
+int state_index(int row, int column) {
     return (column * 4 + row);
 }
 
-// Mélange les lignes d'une matrice 4*4
-uint8_t* shiftRows(uint8_t* matrice)
+/*
+*   Mélange les lignes d'une matrice 4*4
+*   - matrice : la matrice à mélanger
+*/
+uint8_t* shift_rows(uint8_t* matrice)
 {
-  // chaque ligne est inversée
-   int shift = 0; // le décalage augmente de 1 a chaque tour de boucle (0 à 3)
+   int shift = 0;
    uint8_t* res = malloc(sizeof(uint8_t)*16);
-   for(int i = 0; i < 4; i++) { // Pour changer de ligne, on incrémente de 4
-     res[stateIndex(i, 0)] =  matrice[stateIndex(i, (shift + 0) % 4)];
-     res[stateIndex(i, 1)] =  matrice[stateIndex(i, (shift + 1) % 4)];
-     res[stateIndex(i, 2)] =  matrice[stateIndex(i, (shift + 2) % 4)];
-     res[stateIndex(i, 3)] =  matrice[stateIndex(i, (shift + 3) % 4)];
+   for(size_t i = 0; i < 4; i++) {
+     res[state_index(i, 0)] =  matrice[state_index(i, (shift + 0) % 4)];
+     res[state_index(i, 1)] =  matrice[state_index(i, (shift + 1) % 4)];
+     res[state_index(i, 2)] =  matrice[state_index(i, (shift + 2) % 4)];
+     res[state_index(i, 3)] =  matrice[state_index(i, (shift + 3) % 4)];
      shift++;
    }
    return res;
 }
 
-// Remets les lignes d'une matrice 4*4 dans le bon sens
-uint8_t* invShiftRows(uint8_t* matrice){
+/*
+*   Remets les lignes d'une matrice 4*4 dans le bon sens
+*   - matrice : la matrice devant retourné à son état initial
+*/
+uint8_t* inv_shift_rows(uint8_t* matrice){
    int shift = 0;
    uint8_t* res = malloc(sizeof(uint8_t)*16);
    for(int i = 0; i < 16; i+=4) {
@@ -154,8 +183,12 @@ uint8_t* invShiftRows(uint8_t* matrice){
    return res;
 }
 
-// Renvoie la colonne à la position pos depuis la matrice matrice
-uint8_t* getColumn(uint8_t* matrice, int pos){
+/*
+*   Renvoie la colonne à la position pos depuis la matrice matrice
+*   - matrice : la matrice d'où récupérer une colonne
+*   - pos : position de la colonne
+*/
+uint8_t* get_column(uint8_t* matrice, int pos){
     uint8_t* column = malloc(sizeof(uint8_t)*4);
     for(int i = 0; i < 4; i++) {
         column[i] = matrice[i*4 + pos];
@@ -163,7 +196,11 @@ uint8_t* getColumn(uint8_t* matrice, int pos){
     return column;
 }
 
-// Renvoie la ligne à la position pos depuis la matrice matrice
+/*
+*   Renvoie la ligne à la position pos depuis la matrice matrice
+*   - matrice : matrice d'où récupérer une ligne
+*   - pos : position de la ligne
+*/
 uint8_t* getRow(uint8_t* matrice, int pos){
     uint8_t* row = malloc(sizeof(uint8_t)*4);
     for(int i = pos*4; i < (pos*4)+4; i++) {
@@ -172,8 +209,11 @@ uint8_t* getRow(uint8_t* matrice, int pos){
     return row;
 }
 
-// Mélange les colonnes d'une matrice 4*4
-uint8_t* mixColumns(uint8_t* matrice)
+/*
+*   Mélange les colonnes d'une matrice 4*4
+*   - matrice : matrice à mélanger
+*/
+uint8_t* mix_columns(uint8_t* matrice)
 {
   uint8_t* new_matrice = malloc(sizeof(uint8_t)*16);
   uint8_t* temp = malloc(sizeof(uint8_t)*4);
@@ -191,14 +231,17 @@ uint8_t* mixColumns(uint8_t* matrice)
   return new_matrice;
 }
 
-// Remets les colonnes d'une matrice 4*4 dans le bon sens
-uint8_t* invMixColumns(uint8_t* matrice){
+/*
+*   Remets les colonnes d'une matrice 4*4 dans le bon sens
+*   - matrice : la matrice devant retourné à son état initial
+*/
+uint8_t* inv_mix_columns(uint8_t* matrice){
   uint8_t* new_matrice = malloc(sizeof(uint8_t)*16);
   uint8_t* temp = malloc(sizeof(uint8_t)*4);
 
   for (size_t i = 0; i < 4; i++) {
-    temp = getColumn(matrice, i);
-    temp = invMultiply(temp);
+    temp = get_column(matrice, i);
+    temp = inv_multiply(temp);
     new_matrice[i*4] = temp[0];
     new_matrice[i*4+1] = temp[1];
     new_matrice[i*4+2] = temp[2];
@@ -214,7 +257,10 @@ uint8_t* invMixColumns(uint8_t* matrice){
   return new_matrice;
 }
 
-// Multiply une colonne de matrice par matriceMix
+/*
+*   Multiply une colonne de matrice par matrice_mix
+*   - column : la colonne à multiplier
+*/
 uint8_t* multiply(uint8_t* column){
   uint8_t* res = malloc(sizeof(uint8_t)*4);
 
@@ -224,17 +270,20 @@ uint8_t* multiply(uint8_t* column){
     res[3] = 0;
 
     for(int i=0;i<4;i++){
-        res[0] = res[0] ^ multiplication(column[i],matriceMix[0+i]);
-        res[1] = res[1] ^ multiplication(column[i],matriceMix[4+i]);
-        res[2] = res[2] ^ multiplication(column[i],matriceMix[8+i]);
-        res[3] = res[3] ^ multiplication(column[i],matriceMix[12+i]);
+        res[0] = res[0] ^ multiplication(column[i],matrice_mix[0+i]);
+        res[1] = res[1] ^ multiplication(column[i],matrice_mix[4+i]);
+        res[2] = res[2] ^ multiplication(column[i],matrice_mix[8+i]);
+        res[3] = res[3] ^ multiplication(column[i],matrice_mix[12+i]);
     }
 
   return res;
 }
 
-// Divise une colonne par matriceMix
-uint8_t* invMultiply(uint8_t* column){
+/*
+*   Divise une colonne par inv_matrice_mix
+*   - column : la colonne à multiplier
+*/
+uint8_t* inv_multiply(uint8_t* column){
     uint8_t* res = malloc(sizeof(uint8_t)*4);
 
     res[0] = 0;
@@ -243,16 +292,21 @@ uint8_t* invMultiply(uint8_t* column){
     res[3] = 0;
 
     for(int i=0;i<4;i++){
-        res[0] = res[0] ^ multiplication(column[i],inv_matriceMix[0+i]);
-        res[1] = res[1] ^ multiplication(column[i],inv_matriceMix[4+i]);
-        res[2] = res[2] ^ multiplication(column[i],inv_matriceMix[8+i]);
-        res[3] = res[3] ^ multiplication(column[i],inv_matriceMix[12+i]);
+        res[0] = res[0] ^ multiplication(column[i],inv_matrice_mix[0+i]);
+        res[1] = res[1] ^ multiplication(column[i],inv_matrice_mix[4+i]);
+        res[2] = res[2] ^ multiplication(column[i],inv_matrice_mix[8+i]);
+        res[3] = res[3] ^ multiplication(column[i],inv_matrice_mix[12+i]);
     }
 
   return res;
 }
 
-// Chiffre un bloc de 16 octets
+/*
+*   Chiffre un bloc de 16 octets
+*   - in : le bloc à chiffrer
+*   - out : le bloc chiffré
+*   - extKey : la clé étendue
+*/
 void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     uint8_t state[16];
 
@@ -272,21 +326,21 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     printVer(key);
 
 
-    addRoundKeyVer(state, key);
+    add_round_keyVer(state, key);
     for(int i = 1; i < NB_ROUNDS; ++i) {
         printf("\nStart of Round: %i\n", i);
         printVer(state);
 
-        memcpy(state, subBytes(state), sizeof(uint8_t) * 16);
-        printf("\nAfter SubBytes: \n");
+        memcpy(state, sub_bytes(state), sizeof(uint8_t) * 16);
+        printf("\nAfter sub_bytes: \n");
         printVer(state);
 
-        memcpy(state, shiftRows(state), sizeof(uint8_t) * 16);
-        printf("\nAfter ShiftRows: \n");
+        memcpy(state, shift_rows(state), sizeof(uint8_t) * 16);
+        printf("\nAfter shift_rows: \n");
         printVer(state);
 
-        memcpy(state, mixColumns(state), sizeof(uint8_t) * 16);
-        printf("\nAfter Mixcolumns: \n");
+        memcpy(state, mix_columns(state), sizeof(uint8_t) * 16);
+        printf("\nAfter mix_columns: \n");
         printVer(state);
 
         memcpy(&key[0], &extKey[(i * 4)+0], sizeof(uint8_t) * 4);
@@ -297,17 +351,17 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
         printf("\nKey: \n");
         printVer(key);
 
-        addRoundKeyVer(state, key);
+        add_round_keyVer(state, key);
     }
 
     printf("ROUND 10");
 
-    memcpy(state, subBytes(state), sizeof(uint8_t) * 16);
-    printf("\nAfter SubBytes: \n");
+    memcpy(state, sub_bytes(state), sizeof(uint8_t) * 16);
+    printf("\nAfter sub_bytes: \n");
     printVer(state);
 
-    memcpy(state, shiftRows(state), sizeof(uint8_t) * 16);
-    printf("\nAfter ShiftRows: \n");
+    memcpy(state, shift_rows(state), sizeof(uint8_t) * 16);
+    printf("\nAfter shift_rows: \n");
     printVer(state);
 
     memcpy(&key[0], &extKey[(NB_ROUNDS) * 4 +0], sizeof(uint8_t) * 4);
@@ -318,7 +372,7 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     printf("\nKey: \n");
     printVer(key);
 
-    addRoundKeyVer(state, key);
+    add_round_keyVer(state, key);
     printf("\nAfter AddKey: \n");
     printVer(state);
 
@@ -337,8 +391,13 @@ void copyVertical(uint8_t* input, uint8_t* output) {
     }
 }
 
-// Déchiffre un bloc de 16 octets
-void invCipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey){
+/*
+*   Déchiffre un bloc de 16 octets
+*   - in : le bloc à déchiffer
+*   - out : le bloc déchiffré
+*   - extKey : la clé étendue
+*/
+void inv_cipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey){
     uint8_t state[16];
     uint8_t key[4][4];
 
@@ -350,34 +409,34 @@ void invCipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey){
     memcpy(&key[2], &extKey[(NB_ROUNDS) * 4 +2], sizeof(uint8_t) * 4);
     memcpy(&key[3], &extKey[(NB_ROUNDS) * 4 +3], sizeof(uint8_t) * 4);
 
-    addRoundKey(state, key);
+    add_round_key(state, key);
 
     for(int i = NB_ROUNDS-1; i >0 ; --i) {
 
-        memcpy(state, invShiftRows(state), sizeof(uint8_t) * 16);
+        memcpy(state, inv_shift_rows(state), sizeof(uint8_t) * 16);
 
-        memcpy(state, invSubBytes(state), sizeof(uint8_t) * 16);
+        memcpy(state, inv_sub_bytes(state), sizeof(uint8_t) * 16);
 
         memcpy(&key[0], &extKey[(i * 4)+0], sizeof(uint8_t) * 4);
         memcpy(&key[1], &extKey[(i * 4)+1], sizeof(uint8_t) * 4);
         memcpy(&key[2], &extKey[(i * 4)+2], sizeof(uint8_t) * 4);
         memcpy(&key[3], &extKey[(i * 4)+3], sizeof(uint8_t) * 4);
 
-        addRoundKey(state, key);
+        add_round_key(state, key);
 
-        memcpy(state, invMixColumns(state), sizeof(uint8_t) * 16);
+        memcpy(state, inv_mix_columns(state), sizeof(uint8_t) * 16);
     }
 
-    memcpy(state, invShiftRows(state), sizeof(uint8_t) * 16);
+    memcpy(state, inv_shift_rows(state), sizeof(uint8_t) * 16);
 
-    memcpy(state, invSubBytes(state), sizeof(uint8_t) * 16);
+    memcpy(state, inv_sub_bytes(state), sizeof(uint8_t) * 16);
 
     memcpy(&key[0], &extKey[0], sizeof(uint8_t) * 4);
     memcpy(&key[1], &extKey[1], sizeof(uint8_t) * 4);
     memcpy(&key[2], &extKey[2], sizeof(uint8_t) * 4);
     memcpy(&key[3], &extKey[3], sizeof(uint8_t) * 4);
 
-    addRoundKey(state, key);
+    add_round_key(state, key);
 
     memcpy (out, state, sizeof(uint8_t) * 16);
 }
