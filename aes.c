@@ -249,7 +249,7 @@ uint8_t* inv_mix_columns(uint8_t* matrice){
   }
 
   uint8_t copy[16];
-  copyVertical(new_matrice, copy);
+  copy_vertical(new_matrice, copy);
 
   memcpy(new_matrice, copy, sizeof(uint8_t) * 16);
 
@@ -387,7 +387,7 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
  * - input :
  * - output :
  */
-void copyVertical(uint8_t* input, uint8_t* output) {
+void copy_vertical(uint8_t* input, uint8_t* output) {
     for(size_t i = 0; i < 4; ++i) {
         output[0 + i] = input[i * 4 + 0];
         output[4 + i] = input[i * 4 + 1];
@@ -407,7 +407,7 @@ void inv_cipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey){
     uint8_t key[4][4];
 
     memcpy (state, in, sizeof(uint8_t) * 16);
-    copyVertical(in, state);
+    copy_vertical(in, state);
 
     memcpy(&key[0], &extKey[(NB_ROUNDS) * 4 +0], sizeof(uint8_t) * 4);
     memcpy(&key[1], &extKey[(NB_ROUNDS) * 4 +1], sizeof(uint8_t) * 4);
