@@ -19,9 +19,9 @@ uint8_t shift_monome(uint8_t monome);
 uint8_t shift_polynome(uint8_t polynome);
 
 /*
- * Fonction permettant de
- * - k :
- * - polynome :
+ * Fonction permettant de shift un polynome k fois
+ * - k : le nombre de fois qu'on doit shift le polynome
+ * - polynome : le polynome sur lequel on doit effectuer le shift
  */
 uint8_t shif_n_polynome(int k, uint8_t polynome);
 

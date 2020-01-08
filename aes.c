@@ -61,7 +61,7 @@ const uint8_t inv_matrice_mix[16]={
 };
 
 /*
-*   Applique la S-box sur un mot de 4 Bytes
+*   Fonction permettant d'appliquer la S-box sur un mot de 4 Bytes
 *   - word : mot de 4 uint8_t
 */
 void sub_word(uint8_t word[4]) {
@@ -71,7 +71,7 @@ void sub_word(uint8_t word[4]) {
 }
 
 /*
-*
+*   Fonction permettant de
 *   - state :
 *   - key :
 */
@@ -86,7 +86,7 @@ void add_round_keyVer(uint8_t* state, uint8_t key[4][4]) {
 }
 
 /*
-*
+*   Fonction permettant de
 *   - state :
 *   - key :
 */
@@ -100,7 +100,7 @@ void add_round_key(uint8_t* state, uint8_t key[4][4]) {
 }
 
 /*
-*   Chiffrement d'une matrice
+*   Fonction permettant le chiffrement d'une matrice
 *   - matrice : la matrice à chiffrer
 */
 uint8_t* sub_bytes(uint8_t* matrice) {
@@ -112,7 +112,7 @@ uint8_t* sub_bytes(uint8_t* matrice) {
 }
 
 /*
-*   Retourne une valeur du tableau sbox
+*   Fonction permettant de retourner une valeur du tableau sbox
 *   - val : la valeur cherché dans le tableau
 */
 uint8_t sub_byte(uint8_t val) {
@@ -120,7 +120,7 @@ uint8_t sub_byte(uint8_t val) {
 }
 
 /*
-*   Déchiffrement d'une matrice
+*   Fonction permettant le déchiffrement d'une matrice
 *   - matrice :
 */
 uint8_t* inv_sub_bytes(uint8_t* matrice) {
@@ -132,7 +132,7 @@ uint8_t* inv_sub_bytes(uint8_t* matrice) {
 }
 
 /*
-*   Retourne une valeur du tableau inv_sbox
+*   Fonction permettant de retourner une valeur du tableau inv_sbox
 *   - val : la valeur à récupérer
 */
 uint8_t inv_sub_byte(uint8_t val) {
@@ -140,7 +140,7 @@ uint8_t inv_sub_byte(uint8_t val) {
 }
 
 /*
-*   Retourne la position dans le tableau d'une valeur à partir de ces coordoonées
+*   Fonction permettant de retourner la position dans le tableau d'une valeur à partir de ces coordoonées
 *   - row : la ligne voulue
 *   - column : la colonne voulue
 */
@@ -149,7 +149,7 @@ int state_index(int row, int column) {
 }
 
 /*
-*   Mélange les lignes d'une matrice 4*4
+*   Fonction permettant de mélanger les lignes d'une matrice 4*4
 *   - matrice : la matrice à mélanger
 */
 uint8_t* shift_rows(uint8_t* matrice)
@@ -167,7 +167,7 @@ uint8_t* shift_rows(uint8_t* matrice)
 }
 
 /*
-*   Remets les lignes d'une matrice 4*4 dans le bon sens
+*   Fonction permettant de remettre les lignes d'une matrice 4*4 dans le bon sens
 *   - matrice : la matrice devant retourné à son état initial
 */
 uint8_t* inv_shift_rows(uint8_t* matrice){
@@ -184,7 +184,7 @@ uint8_t* inv_shift_rows(uint8_t* matrice){
 }
 
 /*
-*   Renvoie la colonne à la position pos depuis la matrice matrice
+*   Fonction permettant de renvoyer la colonne à la position pos depuis la matrice matrice
 *   - matrice : la matrice d'où récupérer une colonne
 *   - pos : position de la colonne
 */
@@ -197,7 +197,7 @@ uint8_t* get_column(uint8_t* matrice, int pos){
 }
 
 /*
-*   Renvoie la ligne à la position pos depuis la matrice matrice
+*   Fonction permettant de renvoyer la ligne à la position pos depuis la matrice matrice
 *   - matrice : matrice d'où récupérer une ligne
 *   - pos : position de la ligne
 */
@@ -210,7 +210,7 @@ uint8_t* getRow(uint8_t* matrice, int pos){
 }
 
 /*
-*   Mélange les colonnes d'une matrice 4*4
+*   Fonction permettant de mélanger les colonnes d'une matrice 4*4
 *   - matrice : matrice à mélanger
 */
 uint8_t* mix_columns(uint8_t* matrice)
@@ -232,7 +232,7 @@ uint8_t* mix_columns(uint8_t* matrice)
 }
 
 /*
-*   Remets les colonnes d'une matrice 4*4 dans le bon sens
+*   Fonction permettant de remettre les colonnes d'une matrice 4*4 dans le bon sens
 *   - matrice : la matrice devant retourné à son état initial
 */
 uint8_t* inv_mix_columns(uint8_t* matrice){
@@ -258,7 +258,7 @@ uint8_t* inv_mix_columns(uint8_t* matrice){
 }
 
 /*
-*   Multiply une colonne de matrice par matrice_mix
+*   Fonction permettant de multiplier une colonne de matrice par matrice_mix
 *   - column : la colonne à multiplier
 */
 uint8_t* multiply(uint8_t* column){
@@ -280,7 +280,7 @@ uint8_t* multiply(uint8_t* column){
 }
 
 /*
-*   Divise une colonne par inv_matrice_mix
+*   Fonction permettant de diviser une colonne par inv_matrice_mix
 *   - column : la colonne à multiplier
 */
 uint8_t* inv_multiply(uint8_t* column){
@@ -302,7 +302,7 @@ uint8_t* inv_multiply(uint8_t* column){
 }
 
 /*
-*   Chiffre un bloc de 16 octets
+*   Fonction permettant de chiffré un bloc de 16 octets
 *   - in : le bloc à chiffrer
 *   - out : le bloc chiffré
 *   - extKey : la clé étendue
@@ -320,28 +320,28 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     printf("%i", key[0][0]);
 
     printf("\nState Init: \n");
-    printVer(state);
+    print_ver(state);
 
     printf("\nKey: \n");
-    printVer(key);
+    print_ver(key);
 
 
     add_round_keyVer(state, key);
     for(int i = 1; i < NB_ROUNDS; ++i) {
         printf("\nStart of Round: %i\n", i);
-        printVer(state);
+        print_ver(state);
 
         memcpy(state, sub_bytes(state), sizeof(uint8_t) * 16);
         printf("\nAfter sub_bytes: \n");
-        printVer(state);
+        print_ver(state);
 
         memcpy(state, shift_rows(state), sizeof(uint8_t) * 16);
         printf("\nAfter shift_rows: \n");
-        printVer(state);
+        print_ver(state);
 
         memcpy(state, mix_columns(state), sizeof(uint8_t) * 16);
         printf("\nAfter mix_columns: \n");
-        printVer(state);
+        print_ver(state);
 
         memcpy(&key[0], &extKey[(i * 4)+0], sizeof(uint8_t) * 4);
         memcpy(&key[1], &extKey[(i * 4)+1], sizeof(uint8_t) * 4);
@@ -349,7 +349,7 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
         memcpy(&key[3], &extKey[(i * 4)+3], sizeof(uint8_t) * 4);
 
         printf("\nKey: \n");
-        printVer(key);
+        print_ver(key);
 
         add_round_keyVer(state, key);
     }
@@ -358,11 +358,11 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
 
     memcpy(state, sub_bytes(state), sizeof(uint8_t) * 16);
     printf("\nAfter sub_bytes: \n");
-    printVer(state);
+    print_ver(state);
 
     memcpy(state, shift_rows(state), sizeof(uint8_t) * 16);
     printf("\nAfter shift_rows: \n");
-    printVer(state);
+    print_ver(state);
 
     memcpy(&key[0], &extKey[(NB_ROUNDS) * 4 +0], sizeof(uint8_t) * 4);
     memcpy(&key[1], &extKey[(NB_ROUNDS) * 4 +1], sizeof(uint8_t) * 4);
@@ -370,18 +370,23 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     memcpy(&key[3], &extKey[(NB_ROUNDS) * 4 +3], sizeof(uint8_t) * 4);
 
     printf("\nKey: \n");
-    printVer(key);
+    print_ver(key);
 
     add_round_keyVer(state, key);
     printf("\nAfter AddKey: \n");
-    printVer(state);
+    print_ver(state);
 
     memcpy (out, state, sizeof(uint8_t) * 16);
 
     printf("\nOUTPUT: \n");
-    printVer(out);
+    print_ver(out);
 }
 
+/*
+ * Fonction permettant de
+ * - input :
+ * - output :
+ */
 void copyVertical(uint8_t* input, uint8_t* output) {
     for(int i = 0; i < 4; ++i) {
         output[0 + i] = input[i * 4 + 0];
@@ -392,7 +397,7 @@ void copyVertical(uint8_t* input, uint8_t* output) {
 }
 
 /*
-*   Déchiffre un bloc de 16 octets
+*   Fonction permettant de déchiffrer un bloc de 16 octets
 *   - in : le bloc à déchiffer
 *   - out : le bloc déchiffré
 *   - extKey : la clé étendue

@@ -33,9 +33,9 @@ uint8_t shift_polynome(uint8_t polynome) {
 }
 
 /*
- * Fonction permettant de
- * - k :
- * - polynome :
+ * Fonction permettant de shift un polynome k fois
+ * - k : le nombre de fois qu'on doit shift le polynome
+ * - polynome : le polynome sur lequel on doit effectuer le shift
  */
 uint8_t shift_n_polynome(int k, uint8_t polynome) {
     uint8_t res = polynome;
