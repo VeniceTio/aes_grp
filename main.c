@@ -13,19 +13,19 @@ int main(int argc, char* argv[]) {
     printf("\n\n\n");
 
 	// Test Shift Rows
-    uint8_t* tab_shift = shiftRows(tab);
+    uint8_t* tab_shift = shift_rows(tab);
 
     print(tab_shift);
     printf("\n\n\n");
 
 	// Test Sub Bytes
-    uint8_t* tab_sub = subBytes(tab_shift);
+    uint8_t* tab_sub = sub_bytes(tab_shift);
 
     print(tab_sub);
     printf("\n\n\n");
 
 	// Test Inv Sub Bytes
-    uint8_t* tab_inv_sub = invSubBytes(tab_sub);
+    uint8_t* tab_inv_sub = inv_sub_bytes(tab_sub);
 
     print(tab_inv_sub);
 
@@ -33,34 +33,34 @@ int main(int argc, char* argv[]) {
     uint8_t* tab_multiply = multiply(tab);
     printf("\nmultiply :\n");
     print(tab_multiply);
-    printf("\nINVmultiply :\n");
-    print(invMultiply(tab_multiply));
+    printf("\ninv_multiply :\n");
+    print(inv_multiply(tab_multiply));
 
-    printf("\n\nmixColumns\n");
-    print(mixColumns(tab));
-    printf("\n\nINVmixColumns\n");
-    print(invMixColumns(mixColumns(tab)));
+    printf("\n\nmix_columns\n");
+    print(mix_columns(tab));
+    printf("\n\ninv_mix_columns\n");
+    print(inv_mix_columns(mix_columns(tab)));
     printf("\n");
-    printf("mixcolumns(shiftRows)\n");
-    print(mixColumns(shiftRows(tab)));
-    printf("invShiftRows(invMixColumn(mixcolumns(shiftRows)))\n");
-    print(invShiftRows(invMixColumns(mixColumns(shiftRows(tab)))));
+    printf("mix_columns(shift_rows)\n");
+    print(mix_columns(shift_rows(tab)));
+    printf("inv_shift_rows(invMixColumn(mix_columns(shift_rows)))\n");
+    print(inv_shift_rows(inv_mix_columns(mix_columns(shift_rows(tab)))));
 
 
-  // Test invShiftRows
-    uint8_t* tab_origin = invShiftRows(tab_inv_sub);
-    printf("invShiftRows\n");
+  // Test inv_shift_rows
+    uint8_t* tab_origin = inv_shift_rows(tab_inv_sub);
+    printf("inv_shift_rows\n");
     print(tab_origin);
     printf("\n\n\n");
 
-    // Test mixColumns
-    uint8_t* tab_columns_mix = mixColumns(tab_origin);
+    // Test mix_columns
+    uint8_t* tab_columns_mix = mix_columns(tab_origin);
 
     print(tab_columns_mix);
     printf("\n\n\n");
 
-    // Test inv_mixColumns
-    uint8_t* tab_columns_unmix = invMixColumns(tab_columns_mix);
+    // Test inv_mix_columns
+    uint8_t* tab_columns_unmix = inv_mix_columns(tab_columns_mix);
 
     print(tab_columns_unmix);
     printf("\n\n\n");
@@ -120,11 +120,11 @@ int main(int argc, char* argv[]) {
   printf("\nOutput \n");
   print(output);
 
-  printf("%s\n", getTextFromFile("test.txt"));
-  printf("%d\n", fileSize("test.txt"));
+  printf("%s\n", get_text_from_file("test.txt"));
+  printf("%d\n", file_size("test.txt"));
 
   printf("\n------------------INVERSE CIPHER DECIPHER-----------------------\n");
-  invCipher(output, decipher, (uint8_t**)extKey);
+  inv_cipher(output, decipher, (uint8_t**)extKey);
   printf("\nINPUT\n");
   printVer(input);
 
