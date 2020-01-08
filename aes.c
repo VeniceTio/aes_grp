@@ -65,7 +65,7 @@ const uint8_t inv_matrice_mix[16]={
 *   - word : mot de 4 uint8_t
 */
 void sub_word(uint8_t word[4]) {
-    for(int i = 0; i < 4; ++i) {
+    for(size_t i = 0; i < 4; ++i) {
         word[i] = sbox[word[i]];
     }
 }
@@ -77,7 +77,7 @@ void sub_word(uint8_t word[4]) {
 */
 void add_round_keyVer(uint8_t* state, uint8_t key[4][4]) {
 
-    for(int i = 0; i < 4; ++i) {
+    for(size_t i = 0; i < 4; ++i) {
         state[4 * i]   = state[4 * i]   ^ key[i][0];
         state[4 * i+1] = state[4 * i+1] ^ key[i][1];
         state[4 * i+2] = state[4 * i+2] ^ key[i][2];
@@ -91,7 +91,7 @@ void add_round_keyVer(uint8_t* state, uint8_t key[4][4]) {
 *   - key :
 */
 void add_round_key(uint8_t* state, uint8_t key[4][4]) {
-    for(int i = 0; i < 4; ++i) {
+    for(size_t i = 0; i < 4; ++i) {
         state[i + 0]   = state[i + 0]   ^ key[i][0];
         state[i + 4] = state[i + 4] ^ key[i][1];
         state[i + 8] = state[i + 8] ^ key[i][2];
@@ -105,7 +105,7 @@ void add_round_key(uint8_t* state, uint8_t key[4][4]) {
 */
 uint8_t* sub_bytes(uint8_t* matrice) {
   uint8_t* res = malloc(sizeof(uint8_t)*16);
-  for(int i = 0; i < 16; i++) {
+  for(size_t i = 0; i < 16; i++) {
     res[i] = sub_byte(matrice[i]);
   }
   return res;
@@ -125,7 +125,7 @@ uint8_t sub_byte(uint8_t val) {
 */
 uint8_t* inv_sub_bytes(uint8_t* matrice) {
   uint8_t* res = malloc(sizeof(uint8_t)*16);
-  for(int i = 0; i < 16; i++) {
+  for(size_t i = 0; i < 16; i++) {
     res[i] = inv_sub_byte(matrice[i]);
   }
   return res;
@@ -173,7 +173,7 @@ uint8_t* shift_rows(uint8_t* matrice)
 uint8_t* inv_shift_rows(uint8_t* matrice){
    int shift = 0;
    uint8_t* res = malloc(sizeof(uint8_t)*16);
-   for(int i = 0; i < 16; i+=4) {
+   for(size_t i = 0; i < 16; i+=4) {
      res[i] = matrice[i+(shift+4)%4];
      res[i+1] = matrice[i+(shift+5)%4];
      res[i+2] = matrice[i+(shift+6)%4];
@@ -190,7 +190,7 @@ uint8_t* inv_shift_rows(uint8_t* matrice){
 */
 uint8_t* get_column(uint8_t* matrice, int pos){
     uint8_t* column = malloc(sizeof(uint8_t)*4);
-    for(int i = 0; i < 4; i++) {
+    for(size_t i = 0; i < 4; i++) {
         column[i] = matrice[i*4 + pos];
     }
     return column;
@@ -203,7 +203,7 @@ uint8_t* get_column(uint8_t* matrice, int pos){
 */
 uint8_t* getRow(uint8_t* matrice, int pos){
     uint8_t* row = malloc(sizeof(uint8_t)*4);
-    for(int i = pos*4; i < (pos*4)+4; i++) {
+    for(size_t i = pos*4; i < (pos*4)+4; i++) {
         row[i%4] = matrice[i];
     }
     return row;
@@ -269,7 +269,7 @@ uint8_t* multiply(uint8_t* column){
     res[2] = 0;
     res[3] = 0;
 
-    for(int i=0;i<4;i++){
+    for(size_t i=0;i<4;i++){
         res[0] = res[0] ^ multiplication(column[i],matrice_mix[0+i]);
         res[1] = res[1] ^ multiplication(column[i],matrice_mix[4+i]);
         res[2] = res[2] ^ multiplication(column[i],matrice_mix[8+i]);
@@ -291,7 +291,7 @@ uint8_t* inv_multiply(uint8_t* column){
     res[2] = 0;
     res[3] = 0;
 
-    for(int i=0;i<4;i++){
+    for(size_t i=0;i<4;i++){
         res[0] = res[0] ^ multiplication(column[i],inv_matrice_mix[0+i]);
         res[1] = res[1] ^ multiplication(column[i],inv_matrice_mix[4+i]);
         res[2] = res[2] ^ multiplication(column[i],inv_matrice_mix[8+i]);
@@ -317,69 +317,69 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     memcpy(&key[2], &extKey[2], sizeof(uint8_t) * 4);
     memcpy(&key[3], &extKey[3], sizeof(uint8_t) * 4);
 
-    printf("%i", key[0][0]);
-
-    printf("\nState Init: \n");
-    print_ver(state);
-
-    printf("\nKey: \n");
-    print_ver(key);
+//    printf("%i", key[0][0]);
+//
+//    printf("\nState Init: \n");
+//    printVer(state);
+//
+//    printf("\nKey: \n");
+//    printVer(key);
 
 
     add_round_keyVer(state, key);
-    for(int i = 1; i < NB_ROUNDS; ++i) {
-        printf("\nStart of Round: %i\n", i);
-        print_ver(state);
+    for(size_t i = 1; i < NB_ROUNDS; ++i) {
+//        printf("\nStart of Round: %i\n", i);
+//        printVer(state);
 
         memcpy(state, sub_bytes(state), sizeof(uint8_t) * 16);
-        printf("\nAfter sub_bytes: \n");
-        print_ver(state);
+//        printf("\nAfter sub_bytes: \n");
+//        printVer(state);
 
         memcpy(state, shift_rows(state), sizeof(uint8_t) * 16);
-        printf("\nAfter shift_rows: \n");
-        print_ver(state);
+//        printf("\nAfter shift_rows: \n");
+//        printVer(state);
 
         memcpy(state, mix_columns(state), sizeof(uint8_t) * 16);
-        printf("\nAfter mix_columns: \n");
-        print_ver(state);
+//        printf("\nAfter mix_columns: \n");
+//        printVer(state);
 
         memcpy(&key[0], &extKey[(i * 4)+0], sizeof(uint8_t) * 4);
         memcpy(&key[1], &extKey[(i * 4)+1], sizeof(uint8_t) * 4);
         memcpy(&key[2], &extKey[(i * 4)+2], sizeof(uint8_t) * 4);
         memcpy(&key[3], &extKey[(i * 4)+3], sizeof(uint8_t) * 4);
 
-        printf("\nKey: \n");
-        print_ver(key);
+//        printf("\nKey: \n");
+//        printVer(key);
 
         add_round_keyVer(state, key);
     }
 
-    printf("ROUND 10");
+    //printf("ROUND 10");
 
     memcpy(state, sub_bytes(state), sizeof(uint8_t) * 16);
-    printf("\nAfter sub_bytes: \n");
-    print_ver(state);
+    //printf("\nAfter sub_bytes: \n");
+    //printVer(state);
 
     memcpy(state, shift_rows(state), sizeof(uint8_t) * 16);
-    printf("\nAfter shift_rows: \n");
-    print_ver(state);
+    //printf("\nAfter shift_rows: \n");
+    //printVer(state);
 
     memcpy(&key[0], &extKey[(NB_ROUNDS) * 4 +0], sizeof(uint8_t) * 4);
     memcpy(&key[1], &extKey[(NB_ROUNDS) * 4 +1], sizeof(uint8_t) * 4);
     memcpy(&key[2], &extKey[(NB_ROUNDS) * 4 +2], sizeof(uint8_t) * 4);
     memcpy(&key[3], &extKey[(NB_ROUNDS) * 4 +3], sizeof(uint8_t) * 4);
 
-    printf("\nKey: \n");
-    print_ver(key);
+    //printf("\nKey: \n");
+    //printVer(key);
 
     add_round_keyVer(state, key);
-    printf("\nAfter AddKey: \n");
-    print_ver(state);
+    //printf("\nAfter AddKey: \n");
+    //printVer(state);
 
     memcpy (out, state, sizeof(uint8_t) * 16);
 
-    printf("\nOUTPUT: \n");
-    print_ver(out);
+    //printf("\nOUTPUT: \n");
+    //printVer(out);
 }
 
 /*
@@ -388,7 +388,7 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
  * - output :
  */
 void copyVertical(uint8_t* input, uint8_t* output) {
-    for(int i = 0; i < 4; ++i) {
+    for(size_t i = 0; i < 4; ++i) {
         output[0 + i] = input[i * 4 + 0];
         output[4 + i] = input[i * 4 + 1];
         output[8 + i] = input[i * 4 + 2];
@@ -416,7 +416,7 @@ void inv_cipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey){
 
     add_round_key(state, key);
 
-    for(int i = NB_ROUNDS-1; i >0 ; --i) {
+    for(size_t i = NB_ROUNDS-1; i >0 ; --i) {
 
         memcpy(state, inv_shift_rows(state), sizeof(uint8_t) * 16);
 
