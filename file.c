@@ -5,13 +5,19 @@
 *   - name : nom du fichier ou chemin d'accès
 */
 int file_size(char* name){
-  FILE* file;
-  file = fopen(name, "r");
 
-  fseek(file, 0L, SEEK_END);
-  int size = ftell(file);
+  uint8_t text[1024] = {};
 
-  fclose(file);
+  int fd = open(name, 0);
+  int size = 0;
+
+  if(fd != -1){
+    read(fd, text, 1024);
+    while(text[size] != '\0'){
+      size++;
+    }
+  }
+
   return size;
 }
 
