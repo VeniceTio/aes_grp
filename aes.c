@@ -317,69 +317,69 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     memcpy(&key[2], &extKey[2], sizeof(uint8_t) * 4);
     memcpy(&key[3], &extKey[3], sizeof(uint8_t) * 4);
 
-    printf("%i", key[0][0]);
-
-    printf("\nState Init: \n");
-    printVer(state);
-
-    printf("\nKey: \n");
-    printVer(key);
+//    printf("%i", key[0][0]);
+//
+//    printf("\nState Init: \n");
+//    printVer(state);
+//
+//    printf("\nKey: \n");
+//    printVer(key);
 
 
     add_round_keyVer(state, key);
     for(int i = 1; i < NB_ROUNDS; ++i) {
-        printf("\nStart of Round: %i\n", i);
-        printVer(state);
+//        printf("\nStart of Round: %i\n", i);
+//        printVer(state);
 
         memcpy(state, sub_bytes(state), sizeof(uint8_t) * 16);
-        printf("\nAfter sub_bytes: \n");
-        printVer(state);
+//        printf("\nAfter sub_bytes: \n");
+//        printVer(state);
 
         memcpy(state, shift_rows(state), sizeof(uint8_t) * 16);
-        printf("\nAfter shift_rows: \n");
-        printVer(state);
+//        printf("\nAfter shift_rows: \n");
+//        printVer(state);
 
         memcpy(state, mix_columns(state), sizeof(uint8_t) * 16);
-        printf("\nAfter mix_columns: \n");
-        printVer(state);
+//        printf("\nAfter mix_columns: \n");
+//        printVer(state);
 
         memcpy(&key[0], &extKey[(i * 4)+0], sizeof(uint8_t) * 4);
         memcpy(&key[1], &extKey[(i * 4)+1], sizeof(uint8_t) * 4);
         memcpy(&key[2], &extKey[(i * 4)+2], sizeof(uint8_t) * 4);
         memcpy(&key[3], &extKey[(i * 4)+3], sizeof(uint8_t) * 4);
 
-        printf("\nKey: \n");
-        printVer(key);
+//        printf("\nKey: \n");
+//        printVer(key);
 
         add_round_keyVer(state, key);
     }
 
-    printf("ROUND 10");
+    //printf("ROUND 10");
 
     memcpy(state, sub_bytes(state), sizeof(uint8_t) * 16);
-    printf("\nAfter sub_bytes: \n");
-    printVer(state);
+    //printf("\nAfter sub_bytes: \n");
+    //printVer(state);
 
     memcpy(state, shift_rows(state), sizeof(uint8_t) * 16);
-    printf("\nAfter shift_rows: \n");
-    printVer(state);
+    //printf("\nAfter shift_rows: \n");
+    //printVer(state);
 
     memcpy(&key[0], &extKey[(NB_ROUNDS) * 4 +0], sizeof(uint8_t) * 4);
     memcpy(&key[1], &extKey[(NB_ROUNDS) * 4 +1], sizeof(uint8_t) * 4);
     memcpy(&key[2], &extKey[(NB_ROUNDS) * 4 +2], sizeof(uint8_t) * 4);
     memcpy(&key[3], &extKey[(NB_ROUNDS) * 4 +3], sizeof(uint8_t) * 4);
 
-    printf("\nKey: \n");
-    printVer(key);
+    //printf("\nKey: \n");
+    //printVer(key);
 
     add_round_keyVer(state, key);
-    printf("\nAfter AddKey: \n");
-    printVer(state);
+    //printf("\nAfter AddKey: \n");
+    //printVer(state);
 
     memcpy (out, state, sizeof(uint8_t) * 16);
 
-    printf("\nOUTPUT: \n");
-    printVer(out);
+    //printf("\nOUTPUT: \n");
+    //printVer(out);
 }
 
 void copyVertical(uint8_t* input, uint8_t* output) {

@@ -13,10 +13,10 @@ int main(int argc, char const *argv[]) {
         return EXIT_FAILURE;
     }
 
-    uint8_t* text = getTextFromFile(argv[1]);
+    uint8_t* text = get_text_from_file(argv[1]);
     printf("%s\n", text);
 
-    int sizeFile = fileSize(argv[1]);
+    int sizeFile = file_size(argv[1]);
     printf("%d\n", sizeFile);
 
     uint8_t in[16];
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < sizeFile; i++) {
         if(i % 16 == 0 && i != 0){
             uint8_t* tab = malloc(16*sizeof(uint8_t));
-            invCipher(in, out, extKey);
+            inv_cipher(in, out, extKey);
 
             copyVertical(out,tab);
             fwrite(tab, 16, sizeof(uint8_t), file);
@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
         in[i % 16] = text[i];
         if (i==sizeFile-1){
             uint8_t* tab = malloc(16*sizeof(uint8_t));
-            invCipher(in, out, extKey);
+            inv_cipher(in, out, extKey);
 
             copyVertical(out,tab);
             fwrite(tab, 16, sizeof(uint8_t), file);
@@ -48,7 +48,7 @@ int main(int argc, char const *argv[]) {
         }
     }
 
-    uint8_t* decipherText = getTextFromFile("aliceDecipher.txt");
+    uint8_t* decipherText = get_text_from_file(argv[2]);
     printf("%s\n", decipherText);
 
     //remove("aliceDecipher.txt");
