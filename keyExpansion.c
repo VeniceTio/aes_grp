@@ -9,7 +9,7 @@ uint8_t rCon[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36 };
  * - keyNum :
  * - extKey :
  */
-uint8_t* getKey(int keyNum, uint8_t* extKey) {
+uint8_t* get_key(int keyNum, uint8_t* extKey) {
     uint8_t* key = malloc(sizeof(uint8_t) * 4);
 
     key[0] = extKey[keyNum * 4];
@@ -24,7 +24,7 @@ uint8_t* getKey(int keyNum, uint8_t* extKey) {
  * Fonction permettant de générer un mot de 4 bytes à partir du tableau de rCon
  * - i :
  */
-uint8_t* getRConWord(int i) {
+uint8_t* get_r_con_word(int i) {
     static uint8_t rConWord[4];
 
     rConWord[0] = rCon[i-1];
@@ -40,7 +40,7 @@ uint8_t* getRConWord(int i) {
  * - text : le texte entré
  * - output : la clef
  */
-void strToKeyByte(char* text, uint8_t output[16]) {
+void str_to_key_byte(char* text, uint8_t output[16]) {
   int len = strlen(text);
 
   // Convertir Char en uint8_t (byte)
@@ -68,7 +68,7 @@ void strToKeyByte(char* text, uint8_t output[16]) {
  * - key :
  * - extKeyW :
  */
-void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
+void key_expansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
     int keyWords = (KEY_LENGTH / 32); // 4 pour la clef de 128 bits
 
     // Copier la clef dans le extKey et le transformer en Mots de Bytes
@@ -88,9 +88,9 @@ void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
         // Si c'est le premier mot de la clef
         if(i % keyWords == 0) {
             // Appliquer la rotation, substitution, rCon
-            rotWord(temp);
+            rot_word(temp);
             sub_word(temp);
-            uint8_t* rCon = getRConWord(i/keyWords);
+            uint8_t* rCon = get_r_con_word(i/keyWords);
             temp = xor_words(temp, rCon );
         }
         // ...
@@ -114,7 +114,7 @@ void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
  * Fonction permettant de shifter les bytes du mot d'un cran vers la gauche
  * - word : le mot qui contient les bytes qu'on doit shifter
  */
-void rotWord(uint8_t* word) {
+void rot_word(uint8_t* word) {
     uint8_t temp = word[0];
     word[0] = word[1];
     word[1] = word[2];
@@ -126,7 +126,7 @@ void rotWord(uint8_t* word) {
  * Fonction permettant de transformer un string en héxadécimale
  * - text : le texte qu'on doit transformer
  */
-char* stringToHexStr(char* text, char output[256]) {
+char* string_to_hex_str(char* text, char output[256]) {
 
   int len = strlen(text);
 
@@ -154,7 +154,7 @@ char* stringToHexStr(char* text, char output[256]) {
 /*
  * Méthode permettant de
  */
-void hexStrToKey(char* hex, uint8_t* key) {
+void hex_str_to_key(char* hex, uint8_t* key) {
 
     //Le nombre de Bits Hexadecimaux doit etre egal au nombre de bits de la Clef
     for(size_t i = 0; i < KEY_LENGTH/8; i++)
