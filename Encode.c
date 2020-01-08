@@ -51,10 +51,8 @@ int main(int argc, char *argv[]) {
             fwrite(tab, 16, sizeof(uint8_t), file);
             free(tab);
         }
-
         in[i % 16] = text[i];
         if (i==sizeFile-1){
-
             for(int j=(i+1)%16;j<16;j++){
                 in[j] = 0;
                 printf("%d\n",j);
