@@ -1,5 +1,8 @@
 #include "file.h"
 
+/*
+*  Retourne le nombre de caratères dans le fichier donné en paramètre
+*/
 int fileSize(char* name){
   FILE* file;
   file = fopen(name, "r");
@@ -11,6 +14,9 @@ int fileSize(char* name){
   return size;
 }
 
+/*
+*  Renvoie le contenu du fichier passé en paramètre
+*/
 uint8_t* getTextFromFile(char* name){
   uint8_t* text = malloc(sizeof(uint8_t) * fileSize(name));
 
