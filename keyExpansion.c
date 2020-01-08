@@ -76,13 +76,13 @@ void keyExpansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
         if(i % keyWords == 0) {
             // Appliquer la rotation, substitution, rCon
             rotWord(temp);
-            subWord(temp);
+            sub_word(temp);
             uint8_t* rCon = getRConWord(i/keyWords);
             temp = xorWords(temp, rCon );
         }
         // ...
         else if(keyWords > 6 && (i % keyWords) == 4) {
-            subWord(temp);
+            sub_word(temp);
         }
 
         //Xor le mot (de la meme position) de la clef precedente avec le mot temp
