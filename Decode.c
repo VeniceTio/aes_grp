@@ -26,7 +26,8 @@ int main(int argc, char *argv[]) {
 
     uint8_t** extKey[(NB_ROUNDS+1) * 4][4];
     uint8_t key[16] =  {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
-    keyExpansion(key, extKey);
+    //uint8_t key[16] =  {0xE4, 0x9C, 0x7B, 0xCB, 0x04, 0x05, 0x06, 0x07, 0x21, 0xC3, 0x16, 0x0B, 0x0C, 0x0D, 0x00, 0x00};
+    key_expansion(key, extKey);
 
     for (int i = 0; i < sizeFile; i++) {
         if(i % 16 == 0 && i != 0){
@@ -39,7 +40,7 @@ int main(int argc, char *argv[]) {
         }
         in[i % 16] = text[i];
         if (i==sizeFile-1){
-            printf("valeur de i % 16 = %d et i=%d\n",i%16,i);
+            //printf("valeur de i % 16 = %d et i=%d\n",i%16,i);
             uint8_t* tab = malloc(16*sizeof(uint8_t));
             inv_cipher(in, out, extKey);
 
