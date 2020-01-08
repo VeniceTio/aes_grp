@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     printf("Hex in numerical: %ld \n", num);
 
     struct HexDigits digits;
-    digits = getHexDigits(183);
+    digits = get_hex_digits(183);
     printf("Digit 1: %i\n", digits.d1);
     printf("Digit 2: %i\n", digits.d2);
 
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
   printf("\n------------------INVERSE CIPHER DECIPHER-----------------------\n");
   inv_cipher(output, decipher, (uint8_t**)extKey);
   printf("\nINPUT\n");
-  printVer(input);
+  print_ver(input);
 
   return 0;
 }
