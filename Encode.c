@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char *argv[]) {
     if (argc != 3)
     {
         fprintf(stderr, "Usage: %s <in_File> <out_File>\n", argv[0]);
@@ -38,8 +38,9 @@ int main(int argc, char const *argv[]) {
         }
         in[i % 16] = text[i];
         if (i==sizeFile-1){
-            for(int j=i%16;j<15;j++){
-                in[j+1] = 0;
+            for(int j=(i+1)%16;j<16;j++){
+                in[j] = 0;
+                printf("%d\n",j);
             }
             uint8_t* tab = malloc(16*sizeof(uint8_t));
             cipher(in, out, extKey);

@@ -36,6 +36,6 @@ Encode: Encode.o aes.o utils.o keyExpansion.o file.o
 	gcc -o Encode -Wall Encode.o aes.o utils.o keyExpansion.o file.o
 
 Decode: Decode.o aes.o utils.o keyExpansion.o file.o
-	gcc -o Decode -Wall mainAlice.o aes.o utils.o keyExpansion.o file.o
+	gcc -o Decode -Wall Decode.o aes.o utils.o keyExpansion.o file.o
 clean:
 	rm *.o main

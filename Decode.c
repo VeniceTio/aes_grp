@@ -5,14 +5,14 @@
 
 #include <stdio.h>
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char *argv[]) {
 
     if (argc != 3)
     {
         fprintf(stderr, "Usage: %s <Encoded_File> <out_File>\n", argv[0]);
         return EXIT_FAILURE;
     }
-
+    //printf(" arg : %d\n", argv[2]);
     uint8_t* text = get_text_from_file(argv[1]);
     printf("%s\n", text);
 
@@ -39,6 +39,7 @@ int main(int argc, char const *argv[]) {
         }
         in[i % 16] = text[i];
         if (i==sizeFile-1){
+            printf("valeur de i % 16 = %d et i=%d\n",i%16,i);
             uint8_t* tab = malloc(16*sizeof(uint8_t));
             inv_cipher(in, out, extKey);
 
