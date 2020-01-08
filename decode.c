@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     //uint8_t key[16] =  {0xE4, 0x9C, 0x7B, 0xCB, 0x04, 0x05, 0x06, 0x07, 0x21, 0xC3, 0x16, 0x0B, 0x0C, 0x0D, 0x00, 0x00};
     key_expansion(key, extKey);
 
-    for (int i = 0; i < sizeFile; i++) {
+    for (size_t i = 0; i < sizeFile; i++) {
         if(i % 16 == 0 && i != 0){
             uint8_t* tab = malloc(16*sizeof(uint8_t));
             inv_cipher(in, out, extKey);
