@@ -1,7 +1,7 @@
 #include "file.h"
 
 /*
-*   Retourne le nombre de caratères dans le fichier donné en paramètre
+*   Fonction permettant de retourner le nombre de caratères dans le fichier donné en paramètre
 *   - name : nom du fichier ou chemin d'accès
 */
 int file_size(char* name){
@@ -16,7 +16,7 @@ int file_size(char* name){
 }
 
 /*
-*   Retourne le texte contenu dans un fichier
+*   Fonction permettant de retourner le texte contenu dans un fichier
 *   - name : nom du fichier ou chemin d'accès
 */
 uint8_t* get_text_from_file(char* name){
