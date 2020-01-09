@@ -75,7 +75,7 @@ void sub_word(uint8_t word[4]) {
 *   - state :
 *   - key :
 */
-void add_round_keyVer(uint8_t* state, uint8_t key[4][4]) {
+void add_round_key_ver(uint8_t* state, uint8_t key[4][4]) {
 
     for(size_t i = 0; i < 4; ++i) {
         state[4 * i]   = state[4 * i]   ^ key[i][0];
@@ -326,7 +326,7 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
 //    printVer(key);
 
 
-    add_round_keyVer(state, key);
+    add_round_key_ver(state, key);
     for(size_t i = 1; i < NB_ROUNDS; ++i) {
 //        printf("\nStart of Round: %i\n", i);
 //        printVer(state);
@@ -383,9 +383,9 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
 }
 
 /*
- * Fonction permettant de
- * - input :
- * - output :
+ * Fonction permettant de transformer les lignes en colonnes et inversement
+ * - input : le tableau sur lequelle on doit effectuer la transformation
+ * - output : le tableau en sortie
  */
 void copy_vertical(uint8_t* input, uint8_t* output) {
     for(size_t i = 0; i < 4; ++i) {
