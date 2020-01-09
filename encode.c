@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
             uint8_t* tab = malloc(16*sizeof(uint8_t));
             cipher(in, out, extKey);
 
-            copyVertical(out,tab);
+            copy_vertical(out,tab);
             fwrite(tab, 16, sizeof(uint8_t), file);
             free(tab);
         }
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
             uint8_t* tab = malloc(16*sizeof(uint8_t));
             cipher(in, out, extKey);
 
-            copyVertical(out,tab);
+            copy_vertical(out,tab);
             fwrite(tab, 16, sizeof(uint8_t), file);
             free(tab);
         }
