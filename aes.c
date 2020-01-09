@@ -351,7 +351,7 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
 //        printf("\nKey: \n");
 //        printVer(key);
 
-        add_round_keyVer(state, key);
+        add_round_key_ver(state, key);
     }
 
     //printf("ROUND 10");
@@ -372,7 +372,7 @@ void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey) {
     //printf("\nKey: \n");
     //printVer(key);
 
-    add_round_keyVer(state, key);
+    add_round_key_ver(state, key);
     //printf("\nAfter AddKey: \n");
     //printVer(state);
 
