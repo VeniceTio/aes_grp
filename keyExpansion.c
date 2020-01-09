@@ -5,9 +5,9 @@
 uint8_t rCon[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36 };
 
 /*
- * Fonction permettant de
- * - keyNum :
- * - extKey :
+ * Fonction permettant de récupérer une clé
+ * - keyNum : le numéro de la clé
+ * - extKey : la clé étendu
  */
 uint8_t* get_key(int keyNum, uint8_t* extKey) {
     uint8_t* key = malloc(sizeof(uint8_t) * 4);
@@ -22,7 +22,7 @@ uint8_t* get_key(int keyNum, uint8_t* extKey) {
 
 /*
  * Fonction permettant de générer un mot de 4 bytes à partir du tableau de rCon
- * - i :
+ * - i : index
  */
 uint8_t* get_r_con_word(int i) {
     static uint8_t rConWord[4];
@@ -65,8 +65,8 @@ void str_to_key_byte(char* text, uint8_t output[16]) {
  * Applique le chiffrement sur le premier mot de la clef. Ensuite, le chiffrement se propage
  * car le Deuxieme mot = (Premier mot) XOR (Deuxieme mot de la clef precedente)
  * ETC jusqu'a NB_CLEFS = NB_ROUNDS + 1
- * - key :
- * - extKeyW :
+ * - key : la clé
+ * - extKeyW : la clé étendu
  */
 void key_expansion(uint8_t key[KEY_LENGTH / 8], uint8_t** extKeyW) {
     int keyWords = (KEY_LENGTH / 32); // 4 pour la clef de 128 bits
@@ -123,7 +123,7 @@ void rot_word(uint8_t* word) {
 }
 
 /*
- * Fonction permettant de transformer un string en héxadécimale
+ * Fonction permettant de transformer un string en hexadécimale
  * - text : le texte qu'on doit transformer
  */
 char* string_to_hex_str(char* text, char output[256]) {
@@ -152,7 +152,9 @@ char* string_to_hex_str(char* text, char output[256]) {
 }
 
 /*
- * Méthode permettant de
+ * Méthode permettant de transformer un hexadécimale en clé
+ *  - hex : l'hexadécimale
+ *  - key : la clé
  */
 void hex_str_to_key(char* hex, uint8_t* key) {
 
