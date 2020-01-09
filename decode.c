@@ -35,17 +35,14 @@ int main(int argc, char *argv[]) {
         if(i % 16 == 0 && i != 0){
             uint8_t* tab = malloc(16*sizeof(uint8_t));
             inv_cipher(in, out, extKey);
-            //print_ver(out);
             copy_vertical(out,tab);
             fwrite(tab, 16, sizeof(uint8_t), file);
             free(tab);
         }
         in[i % 16] = text[i];
         if (i==sizeFile-1){
-            //printf("valeur de i % 16 = %d et i=%d\n",i%16,i);
             uint8_t* tab = malloc(16*sizeof(uint8_t));
             inv_cipher(in, out, extKey);
-            //print_ver(out);
             copy_vertical(out,tab);
             fwrite(tab, 16, sizeof(uint8_t), file);
             free(tab);
