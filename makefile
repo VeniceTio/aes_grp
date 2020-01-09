@@ -1,6 +1,6 @@
 CC=gcc
 
-all: main main.o mainAlice.o aes.o utils.o keyExpansion.o file.o mainAlice Decode.o Encode.o Encode Decode
+all: main main.o mainAlice.o aes.o utils.o keyExpansion.o file.o mainAlice decode.o encode.o encode decode
 
 main: main.o aes.o utils.o keyExpansion.o file.o
 	gcc -o main -Wall main.o aes.o utils.o keyExpansion.o file.o
@@ -26,16 +26,16 @@ keyExpansion.o: keyExpansion.h keyExpansion.c
 file.o: file.h file.c
 	gcc -o file.o -Wall -c file.c
 
-Encode.o: Encode.c
-	gcc -o Encode.o -Wall -c Encode.c
+encode.o: encode.c
+	gcc -o encode.o -Wall -c encode.c
 
-Decode.o: Decode.c
-	gcc -o Decode.o -Wall -c Decode.c
+decode.o: decode.c
+	gcc -o decode.o -Wall -c decode.c
 
-Encode: Encode.o aes.o utils.o keyExpansion.o file.o
-	gcc -o Encode -Wall Encode.o aes.o utils.o keyExpansion.o file.o
+encode: encode.o aes.o utils.o keyExpansion.o file.o
+	gcc -o encode -Wall encode.o aes.o utils.o keyExpansion.o file.o
 
-Decode: Decode.o aes.o utils.o keyExpansion.o file.o
-	gcc -o Decode -Wall Decode.o aes.o utils.o keyExpansion.o file.o
+decode: decode.o aes.o utils.o keyExpansion.o file.o
+	gcc -o decode -Wall decode.o aes.o utils.o keyExpansion.o file.o
 clean:
 	rm *.o main
