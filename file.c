@@ -6,13 +6,13 @@
 */
 int file_size(char* name){
 
-  uint8_t text[1024] = {};
+  uint8_t text[4096] = {};
 
   int fd = open(name, 0);
   int size = 0;
 
   if(fd != -1){
-    read(fd, text, 1024);
+    read(fd, text, 4096);
     while(text[size] != '\0'){
       size++;
     }

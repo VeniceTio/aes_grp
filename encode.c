@@ -6,9 +6,9 @@
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
-    if (argc != 4)
+    if (argc != 5)
     {
-        fprintf(stderr, "Usage: %s <in_File> <out_File> <cle>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <in_File> <out_File> <option> <cle>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -27,7 +27,11 @@ int main(int argc, char *argv[]) {
     //uint8_t key[16] =  {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
     //uint8_t key[16] =  {0xE4, 0x9C, 0x7B, 0xCB, 0x04, 0x05, 0x06, 0x07, 0x21, 0xC3, 0x16, 0x0B, 0x0C, 0x0D, 0x00, 0x00};
     uint8_t key[16];
-    str_to_key_byte(argv[3], key);
+    if(argv[3]=="-h"){
+        hex_str_to_key(argv[4],key);
+    } else{
+        str_to_key_byte(argv[4], key);
+    }
     key_expansion(key, extKey);
 
     for (size_t i = 0; i < sizeFile; i++) {

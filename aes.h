@@ -21,6 +21,7 @@ uint8_t* inv_mix_columns(uint8_t* word);
 uint8_t* multiply(uint8_t* column);
 uint8_t* inv_multiply(uint8_t* column);
 uint8_t* get_column(uint8_t* matrice, int pos);
+void copy_vertical(uint8_t* input, uint8_t* output);
 void cipher(uint8_t in[16], uint8_t out[16], uint8_t** extKey);
 void inv_cipher(uint8_t in[16], uint8_t out[16],uint8_t** extKey);
 
